@@ -25,9 +25,6 @@
       "com.kneelawk.extramodintegrations.ExMIPlugin"
     ]
   },
-  "mixins": [
-    "extra-mod-integrations.mixins.json"
-  ],
 
   "depends": {
     "fabricloader": ">=0.14.9",
@@ -40,6 +37,7 @@
     "indrev": "*",
     "techreborn": "*",
     "farmersdelight": "*",
-    "conjuring": "*"
+    "conjuring": "*",
+    "tconstruct": "*"
   }
 }

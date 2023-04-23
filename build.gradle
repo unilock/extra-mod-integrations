@@ -27,42 +27,29 @@ group = project.maven_group
 repositories {
     maven {
         // EMI & Mod Menu
-        name "TerraformersMC"
-        url "https://maven.terraformersmc.com/releases/"
+        name = "TerraformersMC"
+        url = "https://maven.terraformersmc.com/releases/"
     }
     maven {
         // TechReborn
-        name "CurseMaven"
-        url "https://cursemaven.com"
+        name = "CurseMaven"
+        url = "https://cursemaven.com"
         content {
             includeGroup "curse.maven"
         }
     }
     maven {
         // Industrial Revolution
-        name "Modrinth"
-        url "https://api.modrinth.com/maven"
+        name = "Modrinth"
+        url = "https://api.modrinth.com/maven"
         content {
             includeGroup "maven.modrinth"
         }
     }
-
     maven {
-        name "CottonMC"
-        url "https://server.bbkr.space/artifactory/libs-release"
+        name = "CottonMC"
+        url = "https://server.bbkr.space/artifactory/libs-release"
     }
-
-    maven {
-        url = "https://jitpack.io"
-        content {
-            includeGroup "com.github.Technici4n"
-            includeGroup "com.github.Draylar"
-            includeGroup "com.github.GabrielOlvH"
-            includeGroup "com.github.Draylar.omega-config"
-            includeGroup "com.github.emilyploszaj"
-        }
-    }
-
     maven {
         name = "Cafeteria Development"
         url = 'https://maven.cafeteria.dev/releases'
@@ -72,7 +59,6 @@ repositories {
             includeGroup 'net.adriantodt.fabricmc'
         }
     }
-
     maven {
         name = "Draylar"
         url = "https://maven.draylar.dev/releases"
@@ -80,13 +66,30 @@ repositories {
             includeGroup "dev.draylar"
         }
     }
-
     maven {
         name = "Wisp Forest"
         url = "https://maven.wispforest.io/"
         content {
             includeGroup "io.wispforest"
             includeGroup "io.wispforest.lavender-md"
+        }
+    }
+
+    maven {
+        // Hephaestus, Mantle, Porting Lib
+        name = "devOS"
+        url = "https://mvn.devos.one/snapshots"
+    }
+
+    maven {
+        name = "JitPack"
+        url = "https://jitpack.io"
+        content {
+            includeGroup "com.github.Technici4n"
+            includeGroup "com.github.Draylar"
+            includeGroup "com.github.GabrielOlvH"
+            includeGroup "com.github.Draylar.omega-config"
+            includeGroup "com.github.emilyploszaj"
         }
     }
 }
@@ -152,6 +155,12 @@ dependencies {
         dependencies.ext.mod "maven.modrinth:conjuring:${project.conjuring_version}"
         dependencies.ext.mod "io.wispforest:owo-lib:${project.owo_version}"
         dependencies.ext.mod "io.wispforest:lavender:${project.lavender_version}"
+    }
+
+    // Hephaestus
+    if (hephaestus_enabled.toBoolean()) {
+        dependencies.ext.mod "slimeknights.mantle:Mantle:${project.mantle_version}"
+        dependencies.ext.mod "slimeknights.tconstruct:Hephaestus:${project.hephaestus_version}"
     }
 
     //
