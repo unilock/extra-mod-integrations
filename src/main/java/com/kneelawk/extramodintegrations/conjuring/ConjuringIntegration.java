@@ -67,12 +67,12 @@ public class ConjuringIntegration extends AbstractConjuringIntegration {
         RecipeManager manager = registry.getRecipeManager();
         manager.listAllOfType(SoulfireForgeRecipe.Type.INSTANCE)
                 .stream()
-                .filter(r -> r.getOutput(null).getItem() != ConjuringItems.PIZZA)
+                .filter(r -> r.getOutput().getItem() != ConjuringItems.PIZZA)
                 .map(SoulfireForgeEmiRecipe::new)
                 .forEach(registry::addRecipe);
         manager.listAllOfType(GemTinkererRecipe.Type.INSTANCE)
                 .stream()
-                .filter(r -> r.getOutput(null).getItem() != Items.COOKIE)
+                .filter(r -> r.getOutput().getItem() != Items.COOKIE)
                 .map(GemTinkeringEmiRecipe::new)
                 .forEach(registry::addRecipe);
         manager.listAllOfType(SoulWeaverRecipe.Type.INSTANCE)

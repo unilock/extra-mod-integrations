@@ -20,7 +20,7 @@ public class GemTinkeringEmiRecipe implements EmiRecipe {
     public GemTinkeringEmiRecipe(GemTinkererRecipe recipe) {
         this.id = recipe.getId();
         this.inputs = recipe.getInputs().stream().map(EmiIngredient::of).toList();
-        this.output = EmiStack.of(recipe.getOutput(null));
+        this.output = EmiStack.of(recipe.getOutput());
     }
 
     @Override

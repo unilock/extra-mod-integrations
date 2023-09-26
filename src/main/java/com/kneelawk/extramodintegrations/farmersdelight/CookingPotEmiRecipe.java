@@ -25,7 +25,7 @@ public class CookingPotEmiRecipe implements EmiRecipe {
     public CookingPotEmiRecipe(CookingPotRecipe recipe) {
         this.id = recipe.getId();
         this.inputs = recipe.getIngredients().stream().map(EmiIngredient::of).toList();
-        this.output = EmiStack.of(recipe.getOutput(null));
+        this.output = EmiStack.of(recipe.getOutput());
         this.containerInput = EmiStack.of(recipe.getContainer());
         this.cookTime = recipe.getCookTime();
     }
