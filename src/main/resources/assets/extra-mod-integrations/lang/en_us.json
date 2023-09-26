@@ -183,6 +183,7 @@
   "tag.c.hot_tungstensteel_blocks": "Hot Tungstensteel Blocks",
   "tag.c.hot_tungstensteel_ingots": "Hot Tungstensteel Ingots",
   "tag.c.hot_tungstensteel_nuggets": "Hot Tungstensteel Nuggets",
+  "tag.c.inferium_ores": "Inferium Ores",
   "tag.c.invar_blocks": "Invar Blocks",
   "tag.c.invar_dusts": "Invar Dusts",
   "tag.c.invar_ingots": "Invar Ingots",
@@ -259,6 +260,7 @@
   "tag.c.platinum_nuggets": "Platinum Nuggets",
   "tag.c.platinum_plates": "Platinum Plates",
   "tag.c.platinum_small_dusts": "Platinum Small Dusts",
+  "tag.c.prosperity_ores": "Prosperity Ores",
   "tag.c.pyrite_dusts": "Pyrite Dusts",
   "tag.c.pyrite_ores": "Pyrite Ores",
   "tag.c.pyrite_small_dusts": "Pyrite Small Dusts",
@@ -337,6 +339,7 @@
   "tag.c.sodalite_dusts": "Sodalite Dusts",
   "tag.c.sodalite_ores": "Sodalite Ores",
   "tag.c.sodalite_small_dusts": "Sodalite Small Dusts",
+  "tag.c.soulium_ores": "Soulium Ores",
   "tag.c.spessartine_dusts": "Spessartine Dusts",
   "tag.c.spessartine_small_dusts": "Spessartine Small Dusts",
   "tag.c.sphalerite_dusts": "Sphalerite Dusts",
@@ -420,6 +423,14 @@
   "tag.farmersdelight.wolf_prey": "Wolf Prey",
 
   "tag.indrev.coolers": "Industrial Revolution Coolers",
+
+  "tag.mysticalagriculture.crossbows": "Crossbows",
+  "tag.mysticalagriculture.diamond_scythes": "Diamond Scythes",
+  "tag.mysticalagriculture.diamond_sickles": "Diamond Sickles",
+  "tag.mysticalagriculture.fishing_rods": "Fishing Rods",
+  "tag.mysticalagriculture.infusion_crystals": "Infusion Crystals",
+  "tag.mysticalagriculture.shears": "Shears",
+  "tag.mysticalagriculture.watering_cans": "Watering Cans",
 
   "tag.reborncore.water_explosion": "Water Explosion",
 
