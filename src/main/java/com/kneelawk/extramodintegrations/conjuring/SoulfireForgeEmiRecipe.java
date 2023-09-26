@@ -23,7 +23,7 @@ public class SoulfireForgeEmiRecipe implements EmiRecipe {
     public SoulfireForgeEmiRecipe(SoulfireForgeRecipe recipe) {
         this.id = recipe.getId();
         this.smeltTime = recipe.getSmeltTime();
-        this.inputs = recipe.getIngredients().stream().map(EmiIngredient::of).toList();
+        this.inputs = recipe.getInputs().stream().map(EmiIngredient::of).toList();
         this.output = EmiStack.of(recipe.getOutput());
     }
 
