@@ -126,7 +126,7 @@ dependencies {
     modLocalRuntime "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
     // EMI
-    modApi("dev.emi:emi-fabric:${project.emi_version}:api") {
+    modCompileOnly("dev.emi:emi-fabric:${project.emi_version}:api") {
         transitive = false
     }
 
