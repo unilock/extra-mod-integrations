@@ -191,6 +191,11 @@ dependencies {
         dependencies.ext.mod "io.github.fabricators_of_create.Porting-Lib:Porting-Lib:${project.porting_lib_version}"
     }
 
+    // Spirit
+    if (spirit_enabled.toBoolean()) {
+        dependencies.ext.mod "maven.modrinth:spirit:${project.spirit_version}"
+    }
+
     //
     // Stuff we just want to have at runtime
     //
@@ -221,6 +226,12 @@ sourceSets {
             }
             if (!conjuring_enabled.toBoolean()) {
                 exclude('com/kneelawk/extramodintegrations/conjuring')
+            }
+            if (!myst_agri_enabled.toBoolean()) {
+                exclude('com/kneelawk/extramodintegrations/mystagri')
+            }
+            if (!spirit_enabled.toBoolean()) {
+                exclude('com/kneelawk/extramodintegrations/spirit')
             }
         }
     }
