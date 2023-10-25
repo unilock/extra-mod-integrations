@@ -1,22 +1,19 @@
 package com.kneelawk.extramodintegrations.indrev;
 
-import java.util.Arrays;
-import java.util.List;
-
-import org.jetbrains.annotations.NotNull;
-
+import com.kneelawk.extramodintegrations.ExMIMod;
 import dev.emi.emi.api.recipe.EmiRecipe;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
 import me.steven.indrev.recipes.machines.IRRecipe;
+import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.NotNull;
 
-import net.minecraft.util.Identifier;
-
-import com.kneelawk.extramodintegrations.ExMIMod;
+import java.util.Arrays;
+import java.util.List;
 
 public abstract class IREmiRecipe<R extends IRRecipe> implements EmiRecipe {
     protected final R recipe;
-    protected final Identifier id;
+    protected final ResourceLocation id;
     protected final List<EmiIngredient> inputs;
     protected final List<EmiStack> outputs;
 
@@ -31,7 +28,7 @@ public abstract class IREmiRecipe<R extends IRRecipe> implements EmiRecipe {
     }
 
     @Override
-    public @NotNull Identifier getId() {
+    public @NotNull ResourceLocation getId() {
         return id;
     }
 

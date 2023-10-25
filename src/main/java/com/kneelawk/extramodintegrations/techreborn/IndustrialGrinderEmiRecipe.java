@@ -1,8 +1,6 @@
 package com.kneelawk.extramodintegrations.techreborn;
 
-import java.util.List;
-import java.util.stream.Stream;
-
+import com.kneelawk.extramodintegrations.util.LongHolder;
 import dev.emi.emi.api.recipe.EmiRecipeCategory;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
@@ -10,7 +8,8 @@ import dev.emi.emi.api.widget.WidgetHolder;
 import reborncore.common.fluid.container.FluidInstance;
 import techreborn.api.recipe.recipes.IndustrialGrinderRecipe;
 
-import com.kneelawk.extramodintegrations.util.LongHolder;
+import java.util.List;
+import java.util.stream.Stream;
 
 public class IndustrialGrinderEmiRecipe extends TREmiRecipe<IndustrialGrinderRecipe> {
     private final List<EmiIngredient> inputsWithFluids;

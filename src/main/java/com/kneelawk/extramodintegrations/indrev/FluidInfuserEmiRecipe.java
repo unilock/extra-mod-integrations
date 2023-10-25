@@ -1,11 +1,10 @@
 package com.kneelawk.extramodintegrations.indrev;
 
+import com.kneelawk.extramodintegrations.util.LongHolder;
+import com.kneelawk.extramodintegrations.util.UIUtils;
 import dev.emi.emi.api.recipe.EmiRecipeCategory;
 import dev.emi.emi.api.widget.WidgetHolder;
 import me.steven.indrev.recipes.machines.FluidInfuserRecipe;
-
-import com.kneelawk.extramodintegrations.util.LongHolder;
-import com.kneelawk.extramodintegrations.util.UIUtils;
 
 public class FluidInfuserEmiRecipe extends IRFluidEmiRecipe<FluidInfuserRecipe> {
     protected FluidInfuserEmiRecipe(FluidInfuserRecipe recipe, LongHolder capacityHolder) {

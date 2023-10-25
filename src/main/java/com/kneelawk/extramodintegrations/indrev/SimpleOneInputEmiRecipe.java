@@ -1,10 +1,9 @@
 package com.kneelawk.extramodintegrations.indrev;
 
+import com.kneelawk.extramodintegrations.util.UIUtils;
 import dev.emi.emi.api.recipe.EmiRecipeCategory;
 import dev.emi.emi.api.widget.WidgetHolder;
 import me.steven.indrev.recipes.machines.IRRecipe;
-
-import com.kneelawk.extramodintegrations.util.UIUtils;
 
 public class SimpleOneInputEmiRecipe extends IREmiRecipe<IRRecipe> {
     private final EmiRecipeCategory category;

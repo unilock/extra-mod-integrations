@@ -1,16 +1,14 @@
 package com.kneelawk.extramodintegrations.indrev;
 
-import java.util.List;
-import java.util.stream.IntStream;
-
 import com.google.common.collect.Lists;
-
 import dev.emi.emi.api.recipe.EmiRecipe;
 import dev.emi.emi.api.recipe.EmiRecipeCategory;
 import dev.emi.emi.api.recipe.handler.StandardRecipeHandler;
 import me.steven.indrev.gui.screenhandlers.IRGuiScreenHandler;
+import net.minecraft.world.inventory.Slot;
 
-import net.minecraft.screen.slot.Slot;
+import java.util.List;
+import java.util.stream.IntStream;
 
 public class SimpleRecipeHandler<T extends IRGuiScreenHandler> implements StandardRecipeHandler<T> {
     private final EmiRecipeCategory category;

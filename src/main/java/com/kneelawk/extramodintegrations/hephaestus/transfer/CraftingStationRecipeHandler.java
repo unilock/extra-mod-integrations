@@ -3,7 +3,7 @@ package com.kneelawk.extramodintegrations.hephaestus.transfer;
 import dev.emi.emi.api.recipe.EmiRecipe;
 import dev.emi.emi.api.recipe.VanillaEmiRecipeCategories;
 import dev.emi.emi.api.recipe.handler.StandardRecipeHandler;
-import net.minecraft.screen.slot.Slot;
+import net.minecraft.world.inventory.Slot;
 import slimeknights.tconstruct.tables.menu.CraftingStationContainerMenu;
 
 import java.util.ArrayList;

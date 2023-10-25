@@ -6,7 +6,7 @@ import dev.emi.emi.api.render.EmiTexture;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.WidgetHolder;
-import net.minecraft.util.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
 import slimeknights.tconstruct.TConstruct;
 import slimeknights.tconstruct.library.recipe.TinkerRecipeTypes;
@@ -15,13 +15,13 @@ import slimeknights.tconstruct.library.recipe.molding.MoldingRecipe;
 import java.util.List;
 
 public class MoldingEmiRecipe implements EmiRecipe {
-  private static final Identifier BACKGROUND_LOC = TConstruct.getResource("textures/gui/jei/casting.png");
+  private static final ResourceLocation BACKGROUND_LOC = TConstruct.getResource("textures/gui/jei/casting.png");
   private static final EmiTexture table = new EmiTexture(BACKGROUND_LOC, 117, 0, 16, 16);
   private static final EmiTexture basin = new EmiTexture(BACKGROUND_LOC, 117, 16, 16, 16);
   private static final EmiTexture downArrow = new EmiTexture(BACKGROUND_LOC, 70, 55, 6, 6);
   private static final EmiTexture upArrow = new EmiTexture(BACKGROUND_LOC, 76, 55, 6, 6);
 
-  private final Identifier id;
+  private final ResourceLocation id;
   private final EmiIngredient material;
   private final EmiStack output;
   private final EmiIngredient pattern;
@@ -32,7 +32,7 @@ public class MoldingEmiRecipe implements EmiRecipe {
     isPatternConsumed = recipe.isPatternConsumed();
     pattern = EmiIngredient.of(recipe.getPattern());
     material = EmiIngredient.of(recipe.getMaterial());
-    output = EmiStack.of(recipe.getOutput(null));
+    output = EmiStack.of(recipe.getResultItem(null));
     block = recipe.getType() == TinkerRecipeTypes.MOLDING_BASIN.get() ? basin : table;
   }
 
@@ -42,7 +42,7 @@ public class MoldingEmiRecipe implements EmiRecipe {
   }
 
   @Override
-  public @Nullable Identifier getId() {
+  public @Nullable ResourceLocation getId() {
     return id;
   }
 

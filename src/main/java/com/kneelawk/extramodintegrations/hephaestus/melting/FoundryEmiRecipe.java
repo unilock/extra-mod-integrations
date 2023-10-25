@@ -7,7 +7,7 @@ import dev.emi.emi.api.recipe.EmiRecipeCategory;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.WidgetHolder;
-import net.minecraft.util.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import slimeknights.tconstruct.library.recipe.FluidValues;
 import slimeknights.tconstruct.library.recipe.melting.MeltingRecipe;
 import slimeknights.tconstruct.plugin.jei.melting.MeltingFuelHandler;
@@ -26,9 +26,9 @@ public class FoundryEmiRecipe extends AbstractMeltingEmiRecipe {
   }
 
   @Override
-  public Identifier getId() {
+  public ResourceLocation getId() {
     // bit of a hack but avoids making id mutable
-    return id.withPrefixedPath("foundry/");
+    return id.withPrefix("foundry/");
   }
 
   @Override

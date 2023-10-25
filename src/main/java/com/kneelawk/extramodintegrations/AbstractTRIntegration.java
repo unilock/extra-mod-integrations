@@ -1,12 +1,9 @@
 package com.kneelawk.extramodintegrations;
 
-import org.jetbrains.annotations.Nullable;
-
-import dev.emi.emi.api.EmiRegistry;
-
-import net.fabricmc.loader.api.FabricLoader;
-
 import com.kneelawk.extramodintegrations.util.ReflectionUtils;
+import dev.emi.emi.api.EmiRegistry;
+import net.fabricmc.loader.api.FabricLoader;
+import org.jetbrains.annotations.Nullable;
 
 public abstract class AbstractTRIntegration {
     @Nullable

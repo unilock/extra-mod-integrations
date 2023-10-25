@@ -6,7 +6,7 @@ import dev.emi.emi.api.recipe.EmiRecipe;
 import dev.emi.emi.api.recipe.handler.EmiCraftContext;
 import dev.emi.emi.api.recipe.handler.StandardRecipeHandler;
 import dev.emi.emi.api.stack.EmiIngredient;
-import net.minecraft.screen.slot.Slot;
+import net.minecraft.world.inventory.Slot;
 import slimeknights.tconstruct.library.recipe.partbuilder.Pattern;
 import slimeknights.tconstruct.tables.block.entity.table.PartBuilderBlockEntity;
 import slimeknights.tconstruct.tables.menu.PartBuilderContainerMenu;
@@ -49,7 +49,7 @@ public class PartBuilderRecipeHandler implements StandardRecipeHandler<PartBuild
     if (catalyst instanceof PatternEmiStack patternStack) {
       Pattern pattern = patternStack.getPattern();
       int index = tile.getSortedButtons().indexOf(pattern);
-      menu.setProperty(0, index);
+      menu.setData(0, index);
     }
     return result;
   }

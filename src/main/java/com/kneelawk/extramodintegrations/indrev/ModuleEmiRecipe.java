@@ -1,10 +1,9 @@
 package com.kneelawk.extramodintegrations.indrev;
 
+import com.kneelawk.extramodintegrations.util.UIUtils;
 import dev.emi.emi.api.recipe.EmiRecipeCategory;
 import dev.emi.emi.api.widget.WidgetHolder;
 import me.steven.indrev.recipes.machines.ModuleRecipe;
-
-import com.kneelawk.extramodintegrations.util.UIUtils;
 
 public class ModuleEmiRecipe extends IREmiRecipe<ModuleRecipe> {
     protected ModuleEmiRecipe(ModuleRecipe recipe) {

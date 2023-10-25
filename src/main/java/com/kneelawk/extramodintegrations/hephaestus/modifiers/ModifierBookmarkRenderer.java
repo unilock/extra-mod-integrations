@@ -1,7 +1,7 @@
 package com.kneelawk.extramodintegrations.hephaestus.modifiers;
 
 import dev.emi.emi.api.render.EmiRenderable;
-import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.gui.GuiGraphics;
 import slimeknights.tconstruct.library.client.modifiers.ModifierIconManager;
 import slimeknights.tconstruct.library.modifiers.ModifierEntry;
 
@@ -12,7 +12,7 @@ public class ModifierBookmarkRenderer implements EmiRenderable {
   }
 
   @Override
-  public void render(DrawContext draw, int x, int y, float delta) {
+  public void render(GuiGraphics draw, int x, int y, float delta) {
     ModifierIconManager.renderIcon(draw, entry.getModifier(), x, y, 100, 16);
   }
 }

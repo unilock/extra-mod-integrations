@@ -8,8 +8,8 @@ import dev.emi.emi.api.render.EmiTexture;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.WidgetHolder;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
 import slimeknights.mantle.client.ResourceColorManager;
 import slimeknights.tconstruct.TConstruct;
@@ -23,9 +23,9 @@ import java.util.List;
 import java.util.Objects;
 
 public class PartBuilderEmiRecipe implements EmiRecipe {
-  private static final Identifier BACKGROUND_LOC = TConstruct.getResource("textures/gui/jei/tinker_station.png");
+  private static final ResourceLocation BACKGROUND_LOC = TConstruct.getResource("textures/gui/jei/tinker_station.png");
 
-  private final Identifier id;
+  private final ResourceLocation id;
   private final EmiIngredient materialVariant;
   private final EmiIngredient patternItems;
   private final EmiIngredient pattern;
@@ -36,7 +36,7 @@ public class PartBuilderEmiRecipe implements EmiRecipe {
   public PartBuilderEmiRecipe(IDisplayPartBuilderRecipe recipe) {
     // TODO: this is a bad id. get a better id from somewhere or make one up
 //    id = recipe.getId();
-    id = new Identifier(ExMIMod.MOD_ID,
+    id = new ResourceLocation(ExMIMod.MOD_ID,
             "tconstruct/part_builder/"
                     + recipe.getMaterial().getId().toString().replace(":", "/")
                     + "/"
@@ -46,7 +46,7 @@ public class PartBuilderEmiRecipe implements EmiRecipe {
     materialVariant = EmiIngredient.of(MaterialItemList.getItems(variantId).stream().map(EmiStack::of).toList());
     patternItems = EmiIngredient.of(recipe.getPatternItems().stream().map(EmiStack::of).toList());
     pattern = new PatternEmiStack(recipe.getPattern());
-    output = EmiStack.of(recipe.getOutput(null));
+    output = EmiStack.of(recipe.getResultItem(null));
     cost = recipe.getCost();
   }
 
@@ -56,7 +56,7 @@ public class PartBuilderEmiRecipe implements EmiRecipe {
   }
 
   @Override
-  public @Nullable Identifier getId() {
+  public @Nullable ResourceLocation getId() {
     return id;
   }
 
@@ -100,9 +100,9 @@ public class PartBuilderEmiRecipe implements EmiRecipe {
     widgets.addSlot(output, 91, 10).drawBack(false).recipeContext(this);
 
     // texts
-    Text name = MaterialTooltipCache.getColoredDisplayName(variantId);
-    widgets.addText(name, 3, 2, Objects.requireNonNullElse(name.getStyle().getColor(), ResourceColorManager.WHITE).getRgb(), true);
-    Text cooling = Text.translatable("jei.tconstruct.part_builder.cost", cost);
+    Component name = MaterialTooltipCache.getColoredDisplayName(variantId);
+    widgets.addText(name, 3, 2, Objects.requireNonNullElse(name.getStyle().getColor(), ResourceColorManager.WHITE).getValue(), true);
+    Component cooling = Component.translatable("jei.tconstruct.part_builder.cost", cost);
     widgets.addText(cooling, 3, 35, Color.GRAY.getRGB(), false);
   }
 }

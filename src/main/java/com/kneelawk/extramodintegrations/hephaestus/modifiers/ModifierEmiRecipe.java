@@ -10,19 +10,19 @@ import dev.emi.emi.api.widget.Bounds;
 import dev.emi.emi.api.widget.TextWidget;
 import dev.emi.emi.api.widget.Widget;
 import dev.emi.emi.api.widget.WidgetHolder;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.tooltip.TooltipComponent;
-import net.minecraft.client.render.GameRenderer;
-import net.minecraft.client.render.model.BakedModel;
-import net.minecraft.client.render.model.BakedModelManager;
-import net.minecraft.client.texture.MissingSprite;
-import net.minecraft.client.texture.Sprite;
-import net.minecraft.client.util.SpriteIdentifier;
-import net.minecraft.recipe.Recipe;
-import net.minecraft.screen.PlayerScreenHandler;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
+import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.texture.MissingTextureAtlasSprite;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.client.resources.model.Material;
+import net.minecraft.client.resources.model.ModelManager;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.inventory.InventoryMenu;
+import net.minecraft.world.item.crafting.Recipe;
 import org.jetbrains.annotations.Nullable;
 import slimeknights.mantle.client.model.NBTKeyModel;
 import slimeknights.tconstruct.TConstruct;
@@ -41,12 +41,12 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public class ModifierEmiRecipe implements EmiRecipe {
-  protected static final Identifier BACKGROUND_LOC = TConstruct.getResource("textures/gui/jei/tinker_station.png");
+  protected static final ResourceLocation BACKGROUND_LOC = TConstruct.getResource("textures/gui/jei/tinker_station.png");
   private final List<EmiIngredient> input = new ArrayList<>();
   private final List<EmiIngredient> tools;
   private final ModifierEntry entry;
-  private final Identifier id;
-  private final Map<SlotType,Sprite> slotTypeSprites = new HashMap<>();
+  private final ResourceLocation id;
+  private final Map<SlotType,TextureAtlasSprite> slotTypeSprites = new HashMap<>();
   private final boolean hasRequirements;
   private final boolean isIncremental;
   private final int maxLevel;
@@ -76,7 +76,7 @@ public class ModifierEmiRecipe implements EmiRecipe {
   }
 
   @Override
-  public @Nullable Identifier getId() {
+  public @Nullable ResourceLocation getId() {
     return id;
   }
 
@@ -121,7 +121,7 @@ public class ModifierEmiRecipe implements EmiRecipe {
       widgets.addTexture(BACKGROUND_LOC, 66, 58, 16, 16, 128, 17)
         .tooltip((checkX, checkY) -> {
           if (GuiUtil.isHovered(checkX, checkY, 66, 58, 16, 16))
-            return List.of(TooltipComponent.of(Text.translatable(requirementsError).asOrderedText()));
+            return List.of(ClientTooltipComponent.create(Component.translatable(requirementsError).getVisualOrderText()));
           return null;
         });
     }
@@ -129,14 +129,14 @@ public class ModifierEmiRecipe implements EmiRecipe {
       widgets.addTexture(BACKGROUND_LOC, 83, 59, 16, 16, 128, 33)
         .tooltip((checkX, checkY) -> {
           if (GuiUtil.isHovered(checkX, checkY, 83, 59, 16, 16))
-            return List.of(TooltipComponent.of(Text.translatable("jei.tconstruct.modifiers.incremental").asOrderedText()));
+            return List.of(ClientTooltipComponent.create(Component.translatable("jei.tconstruct.modifiers.incremental").getVisualOrderText()));
           return null;
         });
     }
 
     // max count
     if (maxLevel > 0) {
-      widgets.addText(Text.translatable("jei.tconstruct.modifiers.max").append(String.valueOf(maxLevel)),
+      widgets.addText(Component.translatable("jei.tconstruct.modifiers.max").append(String.valueOf(maxLevel)),
         66, 16, Color.GRAY.getRGB(), false);
     }
 
@@ -144,7 +144,7 @@ public class ModifierEmiRecipe implements EmiRecipe {
     // slot cost
     widgets.add(new SlotCountWidget(110, 58, slots));
     if (slots != null) {
-      Text text = Text.literal(Integer.toString(slots.getCount()));
+      Component text = Component.literal(Integer.toString(slots.getCount()));
       widgets.addText(text, 111, 63, Color.GRAY.getRGB(), false).horizontalAlign(TextWidget.Alignment.END);
     }
 
@@ -186,48 +186,48 @@ public class ModifierEmiRecipe implements EmiRecipe {
     }
 
     @Override
-    public List<TooltipComponent> getTooltip(int mouseX, int mouseY) {
-      Text tooltipComponent = null;
+    public List<ClientTooltipComponent> getTooltip(int mouseX, int mouseY) {
+      Component tooltipComponent = null;
       if (slots != null) {
         int count = slots.getCount();
         if (count == 1) {
-          tooltipComponent = Text.translatable("jei.tconstruct.modifiers.slot", slots.getType().getDisplayName());
+          tooltipComponent = Component.translatable("jei.tconstruct.modifiers.slot", slots.getType().getDisplayName());
         } else if (count > 1) {
-          tooltipComponent = Text.translatable("jei.tconstruct.modifiers.slots", slots, slots.getType().getDisplayName());
+          tooltipComponent = Component.translatable("jei.tconstruct.modifiers.slots", slots, slots.getType().getDisplayName());
         }
       } else {
-        tooltipComponent = Text.translatable("jei.tconstruct.modifiers.free");
+        tooltipComponent = Component.translatable("jei.tconstruct.modifiers.free");
       }
       if (tooltipComponent != null) {
-        return List.of(TooltipComponent.of(tooltipComponent.asOrderedText()));
+        return List.of(ClientTooltipComponent.create(tooltipComponent.getVisualOrderText()));
       }
       return List.of();
     }
 
     @Override
-    public void render(DrawContext draw, int mouseX, int mouseY, float delta) {
-      MinecraftClient minecraft = MinecraftClient.getInstance();
-      Sprite sprite;
+    public void render(GuiGraphics draw, int mouseX, int mouseY, float delta) {
+      Minecraft minecraft = Minecraft.getInstance();
+      TextureAtlasSprite sprite;
       SlotType slotType = slots == null ? null : slots.getType();
       if (slotTypeSprites.containsKey(slotType)) {
         sprite = slotTypeSprites.get(slotType);
       } else {
-        BakedModelManager modelManager = minecraft.getBakedModelManager();
+        ModelManager modelManager = minecraft.getModelManager();
         // gets the model for the item, its a sepcial one that gives us texture info
-        BakedModel model = minecraft.getItemRenderer().getModels().getModel(TinkerModifiers.creativeSlotItem.get());
+        BakedModel model = minecraft.getItemRenderer().getItemModelShaper().getItemModel(TinkerModifiers.creativeSlotItem.get());
         if (model != null && model.getOverrides() instanceof NBTKeyModel.Overrides) {
-          SpriteIdentifier material = ((NBTKeyModel.Overrides) model.getOverrides()).getTexture(slotType == null ? "slotless" : slotType.getName());
-          sprite = modelManager.getAtlas(material.getAtlasId()).getSprite(material.getTextureId());
+          Material material = ((NBTKeyModel.Overrides) model.getOverrides()).getTexture(slotType == null ? "slotless" : slotType.getName());
+          sprite = modelManager.getAtlas(material.atlasLocation()).getSprite(material.texture());
         } else {
           // failed to use the model, use missing texture
-          sprite = modelManager.getAtlas(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE).getSprite(MissingSprite.getMissingSpriteId());
+          sprite = modelManager.getAtlas(InventoryMenu.BLOCK_ATLAS).getSprite(MissingTextureAtlasSprite.getLocation());
         }
         slotTypeSprites.put(slotType, sprite);
       }
-      RenderSystem.setShader(GameRenderer::getPositionTexProgram);
-      RenderSystem.setShaderTexture(0, PlayerScreenHandler.BLOCK_ATLAS_TEXTURE);
+      RenderSystem.setShader(GameRenderer::getPositionTexShader);
+      RenderSystem.setShaderTexture(0, InventoryMenu.BLOCK_ATLAS);
 
-      draw.drawSprite(x, y, 0, 16, 16, sprite);
+      draw.blit(x, y, 0, 16, 16, sprite);
     }
   }
 

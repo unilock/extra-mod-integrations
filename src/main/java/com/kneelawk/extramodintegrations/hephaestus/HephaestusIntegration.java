@@ -24,18 +24,18 @@ import dev.emi.emi.api.stack.EmiStackInteraction;
 import dev.emi.emi.api.widget.Bounds;
 import io.github.fabricators_of_create.porting_lib.fluids.FluidStack;
 import io.github.fabricators_of_create.porting_lib.mixin.accessors.common.accessor.RecipeManagerAccessor;
-import net.minecraft.block.Oxidizable;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.inventory.Inventory;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.recipe.Recipe;
-import net.minecraft.recipe.RecipeManager;
-import net.minecraft.recipe.RecipeType;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.registry.tag.ItemTags;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.core.Holder;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.world.Container;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeManager;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.level.block.WeatheringCopper;
 import slimeknights.mantle.client.screen.MultiModuleScreen;
 import slimeknights.mantle.recipe.helper.RecipeHelper;
 import slimeknights.tconstruct.TConstruct;
@@ -163,7 +163,7 @@ public class HephaestusIntegration extends AbstractHephaestusIntegration {
     registry.addWorkstation(FOUNDRY_CATEGORY, EmiStack.of(TinkerSmeltery.foundryController.get()));
 
     // modifiers
-    for (RegistryEntry<Item> item : Objects.requireNonNull(Registries.ITEM.iterateEntries(TinkerTags.Items.MELEE))) {
+    for (Holder<Item> item : Objects.requireNonNull(BuiltInRegistries.ITEM.getTagOrEmpty(TinkerTags.Items.MELEE))) {
       // add any tools with a severing trait
       if (item instanceof IModifiable modifiable && modifiable.getToolDefinition().getData().getTraits().stream().anyMatch(entry -> entry.matches(TinkerModifiers.severing.getId()))) {
         registry.addWorkstation(SEVERING_CATEGORY, EmiStack.of(IModifiableDisplay.getDisplayStack(item.value())));
@@ -231,8 +231,8 @@ public class HephaestusIntegration extends AbstractHephaestusIntegration {
 
 
     // add world interaction recipes for waxing and stripping copper platforms
-    for (Oxidizable.OxidationLevel state : Oxidizable.OxidationLevel.values()) {
-      String stateId = state == Oxidizable.OxidationLevel.UNAFFECTED ? ""
+    for (WeatheringCopper.WeatherState state : WeatheringCopper.WeatherState.values()) {
+      String stateId = state == WeatheringCopper.WeatherState.UNAFFECTED ? ""
         : state.toString().toLowerCase()+"_";
 
       registry.addRecipe(EmiWorldInteractionRecipe.builder()
@@ -286,15 +286,15 @@ public class HephaestusIntegration extends AbstractHephaestusIntegration {
 //    registry.setDefaultComparison(TinkerSmeltery.scorchedChute.asItem(), compareNbt);
 
     // tool parts
-    Registries.ITEM.iterateEntries(TinkerTags.Items.TOOL_PARTS)
+    BuiltInRegistries.ITEM.getTagOrEmpty(TinkerTags.Items.TOOL_PARTS)
             .forEach(i -> registry.setDefaultComparison(i.value(), Comparison.compareNbt()));
 
     // tools
-    Registries.ITEM.iterateEntries(TinkerTags.Items.MULTIPART_TOOL)
+    BuiltInRegistries.ITEM.getTagOrEmpty(TinkerTags.Items.MULTIPART_TOOL)
             .forEach(i -> registry.setDefaultComparison(i.value(), Comparison.compareNbt()));
 
     // tanks
-    Registries.ITEM.iterateEntries(TinkerTags.Items.TANKS)
+    BuiltInRegistries.ITEM.getTagOrEmpty(TinkerTags.Items.TANKS)
             .forEach(i -> registry.setDefaultComparison(i.value(), Comparison.compareNbt()));
 
     // misc
@@ -317,7 +317,7 @@ public class HephaestusIntegration extends AbstractHephaestusIntegration {
     }
   }
 
-  private static <T extends Recipe<C>, C extends Inventory> void addCastingCatalyst(EmiRegistry registry, RecipeManager manager, EmiRecipeCategory ownCategory, EmiIngredient workstation, RecipeType<MoldingRecipe> type) {
+  private static <T extends Recipe<C>, C extends Container> void addCastingCatalyst(EmiRegistry registry, RecipeManager manager, EmiRecipeCategory ownCategory, EmiIngredient workstation, RecipeType<MoldingRecipe> type) {
     registry.addWorkstation(ownCategory, workstation);
     if (!((RecipeManagerAccessor)manager).port_lib$byType(type).isEmpty()) {
       registry.addWorkstation(MOLDING_CATEGORY, workstation);

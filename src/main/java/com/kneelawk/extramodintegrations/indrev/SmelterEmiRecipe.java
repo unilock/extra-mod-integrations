@@ -1,11 +1,10 @@
 package com.kneelawk.extramodintegrations.indrev;
 
+import com.kneelawk.extramodintegrations.util.LongHolder;
+import com.kneelawk.extramodintegrations.util.UIUtils;
 import dev.emi.emi.api.recipe.EmiRecipeCategory;
 import dev.emi.emi.api.widget.WidgetHolder;
 import me.steven.indrev.recipes.machines.SmelterRecipe;
-
-import com.kneelawk.extramodintegrations.util.LongHolder;
-import com.kneelawk.extramodintegrations.util.UIUtils;
 
 public class SmelterEmiRecipe extends IRFluidEmiRecipe<SmelterRecipe> {
     protected SmelterEmiRecipe(SmelterRecipe recipe, LongHolder capacityHolder) {

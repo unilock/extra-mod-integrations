@@ -7,8 +7,8 @@ import dev.emi.emi.api.render.EmiTexture;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.WidgetHolder;
-import net.minecraft.client.gui.tooltip.TooltipComponent;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
+import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
 import slimeknights.tconstruct.TConstruct;
 import slimeknights.tconstruct.library.recipe.FluidValues;
@@ -18,14 +18,14 @@ import slimeknights.tconstruct.library.recipe.casting.container.ContainerFilling
 import java.util.List;
 
 public abstract class AbstractCastingEmiRecipe implements EmiRecipe {
-  protected static final Identifier BACKGROUND_LOC = TConstruct.getResource("textures/gui/jei/casting.png");
+  protected static final ResourceLocation BACKGROUND_LOC = TConstruct.getResource("textures/gui/jei/casting.png");
   private static final EmiTexture castConsumed = new EmiTexture(BACKGROUND_LOC, 141, 32, 13, 11);
   private static final EmiTexture castKept = new EmiTexture(BACKGROUND_LOC, 141, 43, 13, 11);
   private static final EmiTexture tankOverlay = new EmiTexture(BACKGROUND_LOC, 133, 0, 32, 32);
   private static final EmiTexture arrow = new EmiTexture(BACKGROUND_LOC, 117, 32, 24, 17);
 
   private final EmiTexture block;
-  private final Identifier id;
+  private final ResourceLocation id;
   private final EmiIngredient fluidInput;
   private final EmiStack output;
   private final EmiIngredient castItem;
@@ -78,7 +78,7 @@ public abstract class AbstractCastingEmiRecipe implements EmiRecipe {
   }
 
   @Override
-  public @Nullable Identifier getId() {
+  public @Nullable ResourceLocation getId() {
     return id;
   }
 
@@ -91,7 +91,7 @@ public abstract class AbstractCastingEmiRecipe implements EmiRecipe {
     widgets.addTexture(block, 38, 35);
 
     // arrows etc
-    List<TooltipComponent> cooling = List.of(TooltipComponent.of(EmiPort.ordered(EmiPort.translatable(
+    List<ClientTooltipComponent> cooling = List.of(ClientTooltipComponent.create(EmiPort.ordered(EmiPort.translatable(
             "jei.tconstruct.time", coolingTime / 20f
     ))));
     widgets.addAnimatedTexture(arrow, 58, 18, coolingTime * 50, true, false, false)

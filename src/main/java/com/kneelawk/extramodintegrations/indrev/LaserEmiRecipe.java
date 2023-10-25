@@ -1,11 +1,10 @@
 package com.kneelawk.extramodintegrations.indrev;
 
+import com.kneelawk.extramodintegrations.ExMIMod;
+import com.kneelawk.extramodintegrations.util.UIUtils;
 import dev.emi.emi.api.recipe.EmiRecipeCategory;
 import dev.emi.emi.api.widget.WidgetHolder;
 import me.steven.indrev.recipes.machines.LaserRecipe;
-
-import com.kneelawk.extramodintegrations.ExMIMod;
-import com.kneelawk.extramodintegrations.util.UIUtils;
 
 public class LaserEmiRecipe extends IREmiRecipe<LaserRecipe> {
     protected LaserEmiRecipe(LaserRecipe recipe) {

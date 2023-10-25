@@ -6,7 +6,7 @@ import dev.emi.emi.api.recipe.EmiRecipeCategory;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.WidgetHolder;
-import net.minecraft.util.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
 import slimeknights.tconstruct.TConstruct;
 import slimeknights.tconstruct.library.recipe.modifiers.severing.SeveringRecipe;
@@ -14,8 +14,8 @@ import slimeknights.tconstruct.library.recipe.modifiers.severing.SeveringRecipe;
 import java.util.List;
 
 public class SeveringEmiRecipe implements EmiRecipe {
-  public static final Identifier BACKGROUND_LOC = TConstruct.getResource("textures/gui/jei/tinker_station.png");
-  private final Identifier id;
+  public static final ResourceLocation BACKGROUND_LOC = TConstruct.getResource("textures/gui/jei/tinker_station.png");
+  private final ResourceLocation id;
   private final EmiIngredient input;
   private final EmiStack output;
   public SeveringEmiRecipe(SeveringRecipe recipe) {
@@ -30,7 +30,7 @@ public class SeveringEmiRecipe implements EmiRecipe {
   }
 
   @Override
-  public @Nullable Identifier getId() {
+  public @Nullable ResourceLocation getId() {
     return id;
   }
 

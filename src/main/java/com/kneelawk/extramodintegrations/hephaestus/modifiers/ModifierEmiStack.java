@@ -3,13 +3,13 @@ package com.kneelawk.extramodintegrations.hephaestus.modifiers;
 import dev.emi.emi.EmiUtil;
 import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.config.EmiConfig;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.tooltip.TooltipComponent;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
-import net.minecraft.util.Identifier;
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import slimeknights.tconstruct.library.modifiers.ModifierEntry;
 
 import java.util.ArrayList;
@@ -18,13 +18,13 @@ import java.util.List;
 public class ModifierEmiStack extends EmiStack {
   private final ModifierBookmarkRenderer renderer;
   private final ModifierEntry entry;
-  private final Text name;
+  private final Component name;
   public ModifierEmiStack(ModifierEntry entry) {
     this.entry = entry;
     this.renderer = new ModifierBookmarkRenderer(entry);
-    this.name = Text.translatable("jei.tconstruct.modifier_ingredient",
-      Text.translatable(entry.getModifier().getTranslationKey()))
-      .styled(style -> style.withColor(entry.getModifier().getTextColor()));
+    this.name = Component.translatable("jei.tconstruct.modifier_ingredient",
+      Component.translatable(entry.getModifier().getTranslationKey()))
+      .withStyle(style -> style.withColor(entry.getModifier().getTextColor()));
   }
 
   @Override
@@ -33,7 +33,7 @@ public class ModifierEmiStack extends EmiStack {
   }
 
   @Override
-  public void render(DrawContext draw, int x, int y, float delta, int flags) {
+  public void render(GuiGraphics draw, int x, int y, float delta, int flags) {
     renderer.render(draw, x, y, delta);
   }
 
@@ -43,7 +43,7 @@ public class ModifierEmiStack extends EmiStack {
   }
 
   @Override
-  public NbtCompound getNbt() {
+  public CompoundTag getNbt() {
     return null;
   }
 
@@ -53,39 +53,39 @@ public class ModifierEmiStack extends EmiStack {
   }
 
   @Override
-  public Identifier getId() {
+  public ResourceLocation getId() {
     return entry.getId();
   }
 
   @Override
-  public List<Text> getTooltipText() {
-    List<Text> tooltip = new ArrayList<>();
+  public List<Component> getTooltipText() {
+    List<Component> tooltip = new ArrayList<>();
 
     tooltip.add(name);
     tooltip.addAll(entry.getModifier().getDescriptionList());
 
-    if (MinecraftClient.getInstance().options.advancedItemTooltips) {
-      tooltip.add(Text.literal(entry.getId().toString()).formatted(Formatting.DARK_GRAY));
+    if (Minecraft.getInstance().options.advancedItemTooltips) {
+      tooltip.add(Component.literal(entry.getId().toString()).withStyle(ChatFormatting.DARK_GRAY));
     }
 
     if (EmiConfig.appendModId) {
       String mod = EmiUtil.getModName(entry.getId().getNamespace());
-      tooltip.add(Text.literal(mod).formatted(Formatting.BLUE, Formatting.ITALIC));
+      tooltip.add(Component.literal(mod).withStyle(ChatFormatting.BLUE, ChatFormatting.ITALIC));
     }
 
     return tooltip;
   }
 
   @Override
-  public List<TooltipComponent> getTooltip() {
+  public List<ClientTooltipComponent> getTooltip() {
     return getTooltipText().stream()
-      .map(Text::asOrderedText)
-      .map(TooltipComponent::of)
+      .map(Component::getVisualOrderText)
+      .map(ClientTooltipComponent::create)
       .toList();
   }
 
   @Override
-  public Text getName() {
+  public Component getName() {
     return name;
   }
 }

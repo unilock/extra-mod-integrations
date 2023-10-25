@@ -1,8 +1,8 @@
 package com.kneelawk.extramodintegrations;
 
 import net.fabricmc.api.ClientModInitializer;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,19 +15,19 @@ public class ExMIMod implements ClientModInitializer {
         LOGGER.info("EMI Addon: Extra Mod Integrations!");
     }
 
-    public static Identifier id(String path) {
-        return new Identifier(MOD_ID, path);
+    public static ResourceLocation id(String path) {
+        return new ResourceLocation(MOD_ID, path);
     }
 
-    public static Text tt(String prefix, String path, Object... args) {
-        return Text.translatable(prefix + "." + MOD_ID + "." + path, args);
+    public static Component tt(String prefix, String path, Object... args) {
+        return Component.translatable(prefix + "." + MOD_ID + "." + path, args);
     }
 
-    public static Text gui(String path, Object... args) {
+    public static Component gui(String path, Object... args) {
         return tt("gui", path, args);
     }
 
-    public static Text tooltip(String path, Object... args) {
+    public static Component tooltip(String path, Object... args) {
         return tt("tooltip", path, args);
     }
 }

@@ -1,12 +1,10 @@
 package com.kneelawk.extramodintegrations.util;
 
-import org.jetbrains.annotations.Nullable;
-
 import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.SlotWidget;
-
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.base.ResourceAmount;
+import org.jetbrains.annotations.Nullable;
 
 public class CustomFluidSlotWidget extends SlotWidget {
     protected final float fluidFullness;

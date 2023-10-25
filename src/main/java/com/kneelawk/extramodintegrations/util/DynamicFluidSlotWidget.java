@@ -1,6 +1,10 @@
 package com.kneelawk.extramodintegrations.util;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import com.mojang.blaze3d.vertex.Tesselator;
+import com.mojang.blaze3d.vertex.VertexFormat;
 import dev.emi.emi.EmiPort;
 import dev.emi.emi.EmiRenderHelper;
 import dev.emi.emi.api.render.EmiRender;
@@ -15,10 +19,10 @@ import dev.emi.emi.config.EmiConfig;
 import dev.emi.emi.runtime.EmiDrawContext;
 import net.fabricmc.fabric.api.transfer.v1.client.fluid.FluidVariantRendering;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.render.*;
-import net.minecraft.client.texture.Sprite;
-import net.minecraft.fluid.Fluid;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.world.level.material.Fluid;
 import org.joml.Matrix4f;
 
 public class DynamicFluidSlotWidget extends SlotWidget {
@@ -65,7 +69,7 @@ public class DynamicFluidSlotWidget extends SlotWidget {
     }
 
     @Override
-    public void render(DrawContext draw, int mouseX, int mouseY, float delta) {
+    public void render(GuiGraphics draw, int mouseX, int mouseY, float delta) {
         float fluidWidth = (float) width;
 
         EmiStack emiStack = null;
@@ -87,10 +91,10 @@ public class DynamicFluidSlotWidget extends SlotWidget {
         }
 
         if (overlay != null) {
-            draw.getMatrices().push();
-            draw.getMatrices().translate(0.0, 0.0, 50.0);
+            draw.pose().pushPose();
+            draw.pose().translate(0.0, 0.0, 50.0);
             overlay.render(draw, x, y, delta);
-            draw.getMatrices().pop();
+            draw.pose().popPose();
         }
 
         if (this.catalyst) {
@@ -111,8 +115,8 @@ public class DynamicFluidSlotWidget extends SlotWidget {
         }
     }
 
-    private static void renderFluid(DrawContext draw, FluidVariant fluid, int x, int y, float slotWidth, float fluidHeight, float slotHeight) {
-        Sprite[] sprites = FluidVariantRendering.getSprites(fluid);
+    private static void renderFluid(GuiGraphics draw, FluidVariant fluid, int x, int y, float slotWidth, float fluidHeight, float slotHeight) {
+        TextureAtlasSprite[] sprites = FluidVariantRendering.getSprites(fluid);
         if (sprites == null || sprites.length < 1 || sprites[0] == null) {
             return;
         }
@@ -120,17 +124,17 @@ public class DynamicFluidSlotWidget extends SlotWidget {
         // make sure the fluid doesn't overflow, and render small quantities as 1 pixel tall
         fluidHeight = Float.max(1.0f, Float.min(fluidHeight, slotHeight));
 
-        Sprite sprite = sprites[0];
-        RenderSystem.setShader(GameRenderer::getPositionColorTexProgram);
+        TextureAtlasSprite sprite = sprites[0];
+        RenderSystem.setShader(GameRenderer::getPositionColorTexShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        RenderSystem.setShaderTexture(0, sprite.getAtlasId());
-        Matrix4f model = draw.getMatrices().peek().getPositionMatrix();
+        RenderSystem.setShaderTexture(0, sprite.atlasLocation());
+        Matrix4f model = draw.pose().last().pose();
         int color = FluidVariantRendering.getColor(fluid);
         float r = (float) (color >> 16 & 0xFF) / 256.0F;
         float g = (float) (color >> 8 & 0xFF) / 256.0F;
         float b = (float) (color & 0xFF) / 256.0F;
-        BufferBuilder bufferBuilder = Tessellator.getInstance().getBuffer();
-        bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR_TEXTURE);
+        BufferBuilder bufferBuilder = Tesselator.getInstance().getBuilder();
+        bufferBuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR_TEX);
         int fluidPatchCountY = (int) (fluidHeight / FLUID_PATCH_HEIGHT);
         int fluidPatchCountX = (int) (slotWidth / FLUID_PATCH_WIDTH);
         for (int i = 0; i < fluidPatchCountY; i++) {
@@ -173,19 +177,19 @@ public class DynamicFluidSlotWidget extends SlotWidget {
         EmiPort.draw(bufferBuilder);
     }
 
-    private static void buildFluidPatch(BufferBuilder bufferBuilder, Matrix4f model, Sprite sprite, float x0, float y0,
+    private static void buildFluidPatch(BufferBuilder bufferBuilder, Matrix4f model, TextureAtlasSprite sprite, float x0, float y0,
                                         float width, float height, float r, float g, float b) {
         float x1 = x0 + width;
         float y1 = y0 + height;
-        float uMin = sprite.getMinU();
-        float vMax = sprite.getMaxV();
-        float spriteWidth = sprite.getMaxU() - sprite.getMinU();
-        float spriteHeight = sprite.getMaxV() - sprite.getMinV();
+        float uMin = sprite.getU0();
+        float vMax = sprite.getV1();
+        float spriteWidth = sprite.getU1() - sprite.getU0();
+        float spriteHeight = sprite.getV1() - sprite.getV0();
         float uMax = uMin + spriteWidth * width / 16f;
         float vMin = vMax - spriteHeight * height / 16f;
-        bufferBuilder.vertex(model, x0, y1, 1.0F).color(r, g, b, 1.0F).texture(uMin, vMax).next();
-        bufferBuilder.vertex(model, x1, y1, 1.0F).color(r, g, b, 1.0F).texture(uMax, vMax).next();
-        bufferBuilder.vertex(model, x1, y0, 1.0F).color(r, g, b, 1.0F).texture(uMax, vMin).next();
-        bufferBuilder.vertex(model, x0, y0, 1.0F).color(r, g, b, 1.0F).texture(uMin, vMin).next();
+        bufferBuilder.vertex(model, x0, y1, 1.0F).color(r, g, b, 1.0F).uv(uMin, vMax).endVertex();
+        bufferBuilder.vertex(model, x1, y1, 1.0F).color(r, g, b, 1.0F).uv(uMax, vMax).endVertex();
+        bufferBuilder.vertex(model, x1, y0, 1.0F).color(r, g, b, 1.0F).uv(uMax, vMin).endVertex();
+        bufferBuilder.vertex(model, x0, y0, 1.0F).color(r, g, b, 1.0F).uv(uMin, vMin).endVertex();
     }
 }

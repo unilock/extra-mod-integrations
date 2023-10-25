@@ -1,10 +1,9 @@
 package com.kneelawk.extramodintegrations.util;
 
-import java.lang.reflect.InvocationTargetException;
-
+import com.kneelawk.extramodintegrations.ExMIMod;
 import org.jetbrains.annotations.Nullable;
 
-import com.kneelawk.extramodintegrations.ExMIMod;
+import java.lang.reflect.InvocationTargetException;
 
 public class ReflectionUtils {
     @SuppressWarnings("unchecked")

@@ -8,8 +8,8 @@ import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.TextWidget;
 import dev.emi.emi.api.widget.WidgetHolder;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
 import slimeknights.tconstruct.TConstruct;
 import slimeknights.tconstruct.library.recipe.alloying.AlloyRecipe;
@@ -21,11 +21,11 @@ import java.util.List;
 
 public class AlloyEmiRecipe implements EmiRecipe {
 
-  private static final Identifier BACKGROUND_LOC = TConstruct.getResource("textures/gui/jei/alloy.png");
+  private static final ResourceLocation BACKGROUND_LOC = TConstruct.getResource("textures/gui/jei/alloy.png");
 
   private static final EmiTexture arrow = new EmiTexture(BACKGROUND_LOC, 172, 0, 24, 17);
   private static final EmiTexture tank = new EmiTexture(BACKGROUND_LOC, 172, 17, 16, 16);
-  private final Identifier id;
+  private final ResourceLocation id;
   private final List<EmiIngredient> inputs;
   private final EmiStack output;
   private final int temperature;
@@ -47,7 +47,7 @@ public class AlloyEmiRecipe implements EmiRecipe {
   }
 
   @Override
-  public @Nullable Identifier getId() {
+  public @Nullable ResourceLocation getId() {
     return id;
   }
 
@@ -103,7 +103,7 @@ public class AlloyEmiRecipe implements EmiRecipe {
 //    widgets.addAnimatedTexture(arrow, 90, 21, 10000, true, false, false);
 
     // temperature info
-    Text temp = Text.translatable("jei.tconstruct.temperature", temperature);
+    Component temp = Component.translatable("jei.tconstruct.temperature", temperature);
     widgets.addText(temp, 102, 5, Color.GRAY.getRGB(), false).horizontalAlign(TextWidget.Alignment.CENTER);
 
     // inputs

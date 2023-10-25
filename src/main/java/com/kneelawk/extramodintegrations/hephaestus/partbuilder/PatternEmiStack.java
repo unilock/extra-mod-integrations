@@ -3,15 +3,15 @@ package com.kneelawk.extramodintegrations.hephaestus.partbuilder;
 import dev.emi.emi.EmiUtil;
 import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.config.EmiConfig;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.tooltip.TooltipComponent;
-import net.minecraft.client.texture.Sprite;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.screen.PlayerScreenHandler;
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
-import net.minecraft.util.Identifier;
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.inventory.InventoryMenu;
 import slimeknights.tconstruct.library.client.RenderUtils;
 import slimeknights.tconstruct.library.recipe.partbuilder.Pattern;
 
@@ -31,11 +31,11 @@ public class PatternEmiStack extends EmiStack {
   }
 
   @Override
-  public void render(DrawContext draw, int x, int y, float delta, int flags) {
+  public void render(GuiGraphics draw, int x, int y, float delta, int flags) {
     if (pattern != null) {
-      Sprite sprite = MinecraftClient.getInstance().getBakedModelManager().getAtlas(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE).getSprite(pattern.getTexture());
-      RenderUtils.setup(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE);
-      draw.drawSprite(x, y, 100, 16, 16, sprite);
+      TextureAtlasSprite sprite = Minecraft.getInstance().getModelManager().getAtlas(InventoryMenu.BLOCK_ATLAS).getSprite(pattern.getTexture());
+      RenderUtils.setup(InventoryMenu.BLOCK_ATLAS);
+      draw.blit(x, y, 100, 16, 16, sprite);
     }
   }
 
@@ -45,7 +45,7 @@ public class PatternEmiStack extends EmiStack {
   }
 
   @Override
-  public NbtCompound getNbt() {
+  public CompoundTag getNbt() {
     return null;
   }
 
@@ -59,38 +59,38 @@ public class PatternEmiStack extends EmiStack {
   }
 
   @Override
-  public Identifier getId() {
-    return new Identifier(pattern.getNamespace(), pattern.getPath());
+  public ResourceLocation getId() {
+    return new ResourceLocation(pattern.getNamespace(), pattern.getPath());
   }
 
   @Override
-  public List<Text> getTooltipText() {
-    List<Text> tooltip = new ArrayList<>();
+  public List<Component> getTooltipText() {
+    List<Component> tooltip = new ArrayList<>();
 
     tooltip.add(pattern.getDisplayName());
 
-    if (MinecraftClient.getInstance().options.advancedItemTooltips) {
-      tooltip.add(Text.literal(pattern.toString()).formatted(Formatting.DARK_GRAY));
+    if (Minecraft.getInstance().options.advancedItemTooltips) {
+      tooltip.add(Component.literal(pattern.toString()).withStyle(ChatFormatting.DARK_GRAY));
     }
 
     if (EmiConfig.appendModId) {
       String mod = EmiUtil.getModName(pattern.getNamespace());
-      tooltip.add(Text.literal(mod).formatted(Formatting.BLUE, Formatting.ITALIC));
+      tooltip.add(Component.literal(mod).withStyle(ChatFormatting.BLUE, ChatFormatting.ITALIC));
     }
 
     return tooltip;
   }
 
   @Override
-  public List<TooltipComponent> getTooltip() {
+  public List<ClientTooltipComponent> getTooltip() {
     return getTooltipText().stream()
-      .map(Text::asOrderedText)
-      .map(TooltipComponent::of)
+      .map(Component::getVisualOrderText)
+      .map(ClientTooltipComponent::create)
       .toList();
   }
 
   @Override
-  public Text getName() {
+  public Component getName() {
     return pattern.getDisplayName();
   }
 }

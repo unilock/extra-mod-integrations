@@ -4,7 +4,7 @@ import com.kneelawk.extramodintegrations.hephaestus.HephaestusIntegration;
 import dev.emi.emi.api.recipe.EmiRecipe;
 import dev.emi.emi.api.recipe.EmiRecipeCategory;
 import dev.emi.emi.api.recipe.handler.StandardRecipeHandler;
-import net.minecraft.screen.slot.Slot;
+import net.minecraft.world.inventory.Slot;
 import slimeknights.tconstruct.smeltery.menu.HeatingStructureContainerMenu;
 
 import java.util.ArrayList;

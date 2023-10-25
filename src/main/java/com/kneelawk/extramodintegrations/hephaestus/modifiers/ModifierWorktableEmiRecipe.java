@@ -7,8 +7,8 @@ import dev.emi.emi.api.render.EmiTexture;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.WidgetHolder;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.Identifier;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 import slimeknights.tconstruct.TConstruct;
 import slimeknights.tconstruct.library.recipe.worktable.IModifierWorktableRecipe;
@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ModifierWorktableEmiRecipe implements EmiRecipe {
-    private static final Identifier BACKGROUND_LOC = TConstruct.getResource("textures/gui/jei/tinker_station.png");
+    private static final ResourceLocation BACKGROUND_LOC = TConstruct.getResource("textures/gui/jei/tinker_station.png");
     private static final EmiTexture background = new EmiTexture(BACKGROUND_LOC, 0, 166, 121, 35);
     private static final EmiTexture toolIcon = new EmiTexture(BACKGROUND_LOC, 128, 0, 16, 16);
     private static final EmiTexture[] slotIcons = {
@@ -37,7 +37,7 @@ public class ModifierWorktableEmiRecipe implements EmiRecipe {
     }
 
     @Override
-    public @Nullable Identifier getId() {
+    public @Nullable ResourceLocation getId() {
         return null;
     }
 

@@ -5,10 +5,10 @@ import dev.emi.emi.api.widget.Bounds;
 import dev.emi.emi.api.widget.SlotWidget;
 import dev.emi.emi.config.EmiConfig;
 import dev.emi.emi.runtime.EmiDrawContext;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.text.Text;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.network.chat.Component;
 import slimeknights.tconstruct.library.modifiers.ModifierEntry;
 
 public class ModifierSlotWidget extends SlotWidget {
@@ -29,12 +29,12 @@ public class ModifierSlotWidget extends SlotWidget {
     }
 
     @Override
-    public void render(DrawContext draw, int mouseX, int mouseY, float delta) {
+    public void render(GuiGraphics draw, int mouseX, int mouseY, float delta) {
         if (entry != null) {
-            Text name = entry.getModifier().getDisplayName(entry.getLevel());
-            TextRenderer fontRenderer = MinecraftClient.getInstance().textRenderer;
-            int xOffset = (width - fontRenderer.getWidth(name)) / 2;
-            draw.drawTextWithShadow(fontRenderer, name, x + xOffset, y+1, -1);
+            Component name = entry.getModifier().getDisplayName(entry.getLevel());
+            Font fontRenderer = Minecraft.getInstance().font;
+            int xOffset = (width - fontRenderer.width(name)) / 2;
+            draw.drawString(fontRenderer, name, x + xOffset, y+1, -1);
         }
 
         if (EmiConfig.showHoverOverlay && bounds.contains(mouseX, mouseY)) {

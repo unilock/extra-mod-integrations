@@ -3,15 +3,15 @@ package com.kneelawk.extramodintegrations.hephaestus.entity;
 import dev.emi.emi.EmiUtil;
 import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.config.EmiConfig;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.tooltip.TooltipComponent;
-import net.minecraft.entity.EntityType;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.registry.Registries;
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
-import net.minecraft.util.Identifier;
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.EntityType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +35,7 @@ public class EntityEmiStack extends EmiStack {
   }
 
   @Override
-  public void render(DrawContext draw, int x, int y, float delta, int flags) {
+  public void render(GuiGraphics draw, int x, int y, float delta, int flags) {
     renderer.render(draw, x, y, delta);
   }
 
@@ -45,7 +45,7 @@ public class EntityEmiStack extends EmiStack {
   }
 
   @Override
-  public NbtCompound getNbt() {
+  public CompoundTag getNbt() {
     return null;
   }
 
@@ -55,38 +55,38 @@ public class EntityEmiStack extends EmiStack {
   }
 
   @Override
-  public Identifier getId() {
-    return Registries.ENTITY_TYPE.getId(type);
+  public ResourceLocation getId() {
+    return BuiltInRegistries.ENTITY_TYPE.getKey(type);
   }
 
   @Override
-  public List<Text> getTooltipText() {
-    List<Text> tooltip = new ArrayList<>();
+  public List<Component> getTooltipText() {
+    List<Component> tooltip = new ArrayList<>();
 
-    tooltip.add(type.getName());
+    tooltip.add(type.getDescription());
 
-    if (MinecraftClient.getInstance().options.advancedItemTooltips) {
-      tooltip.add((Text.literal(Objects.requireNonNull(Registries.ENTITY_TYPE.getId(type)).toString())).formatted(Formatting.DARK_GRAY));
+    if (Minecraft.getInstance().options.advancedItemTooltips) {
+      tooltip.add((Component.literal(Objects.requireNonNull(BuiltInRegistries.ENTITY_TYPE.getKey(type)).toString())).withStyle(ChatFormatting.DARK_GRAY));
     }
 
     if (EmiConfig.appendModId) {
-      String mod = EmiUtil.getModName(Registries.ENTITY_TYPE.getId(type).getNamespace());
-      tooltip.add(Text.literal(mod).formatted(Formatting.BLUE, Formatting.ITALIC));
+      String mod = EmiUtil.getModName(BuiltInRegistries.ENTITY_TYPE.getKey(type).getNamespace());
+      tooltip.add(Component.literal(mod).withStyle(ChatFormatting.BLUE, ChatFormatting.ITALIC));
     }
 
     return tooltip;
   }
 
   @Override
-  public List<TooltipComponent> getTooltip() {
+  public List<ClientTooltipComponent> getTooltip() {
     return getTooltipText().stream()
-      .map(Text::asOrderedText)
-      .map(TooltipComponent::of)
+      .map(Component::getVisualOrderText)
+      .map(ClientTooltipComponent::create)
       .toList();
   }
 
   @Override
-  public Text getName() {
-    return type.getName();
+  public Component getName() {
+    return type.getDescription();
   }
 }

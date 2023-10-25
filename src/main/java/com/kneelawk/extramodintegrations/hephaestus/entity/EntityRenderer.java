@@ -1,16 +1,16 @@
 package com.kneelawk.extramodintegrations.hephaestus.entity;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
 import dev.emi.emi.api.render.EmiRenderable;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.screen.ingame.InventoryScreen;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.registry.Registries;
-import net.minecraft.world.World;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.inventory.InventoryScreen;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.Level;
 import slimeknights.tconstruct.TConstruct;
 
 import java.util.HashMap;
@@ -36,15 +36,15 @@ public class EntityRenderer implements EmiRenderable {
   }
 
   @Override
-  public void render(DrawContext draw, int x, int y, float delta) {
+  public void render(GuiGraphics draw, int x, int y, float delta) {
     if (type != null) {
-      World world = MinecraftClient.getInstance().world;
+      Level world = Minecraft.getInstance().level;
       if (world != null && !IGNORED_ENTITIES.contains(type)) {
         Entity entity;
         // players cannot be created using the type, but we can use the client player
         // side effect is it renders armor/items
         if (type == EntityType.PLAYER) {
-          entity = MinecraftClient.getInstance().player;
+          entity = Minecraft.getInstance().player;
         } else {
           // entity is created with the client world, but the entity map is thrown away when JEI restarts so they should be okay I think
           entity = ENTITY_MAP.computeIfAbsent(type, t -> t.create(world));
@@ -53,22 +53,22 @@ public class EntityRenderer implements EmiRenderable {
         if (entity instanceof LivingEntity livingEntity) {
           // scale down large mobs, but don't scale up small ones
           int scale = size / 2;
-          float height = entity.getHeight();
-          float width = entity.getWidth();
+          float height = entity.getBbHeight();
+          float width = entity.getBbWidth();
           if (height > 2 || width > 2) {
             scale = (int)(size / Math.max(height, width));
           }
           // catch exceptions drawing the entity to be safe, any caught exceptions blacklist the entity
           try {
-            MatrixStack modelView = RenderSystem.getModelViewStack();
-            modelView.push();
-            modelView.multiplyPositionMatrix(draw.getMatrices().peek().getPositionMatrix());
-            InventoryScreen.drawEntity(draw, x + size / 4, y + size * 3 / 4, scale, 0, 10, livingEntity);
-            modelView.pop();
+            PoseStack modelView = RenderSystem.getModelViewStack();
+            modelView.pushPose();
+            modelView.mulPoseMatrix(draw.pose().last().pose());
+            InventoryScreen.renderEntityInInventoryFollowsMouse(draw, x + size / 4, y + size * 3 / 4, scale, 0, 10, livingEntity);
+            modelView.popPose();
             RenderSystem.applyModelViewMatrix();
             return;
           } catch (Exception e) {
-            TConstruct.LOG.error("Error drawing entity " + Registries.ENTITY_TYPE.getId(type), e);
+            TConstruct.LOG.error("Error drawing entity " + BuiltInRegistries.ENTITY_TYPE.getKey(type), e);
             IGNORED_ENTITIES.add(type);
             ENTITY_MAP.remove(type);
           }
