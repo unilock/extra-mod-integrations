@@ -3,11 +3,11 @@ package com.kneelawk.extramodintegrations.hephaestus.transfer;
 import dev.emi.emi.api.recipe.EmiRecipe;
 import dev.emi.emi.api.recipe.VanillaEmiRecipeCategories;
 import dev.emi.emi.api.recipe.handler.StandardRecipeHandler;
+import net.minecraft.screen.slot.Slot;
 import slimeknights.tconstruct.tables.menu.CraftingStationContainerMenu;
 
 import java.util.ArrayList;
 import java.util.List;
-import net.minecraft.screen.slot.Slot;
 
 public class CraftingStationRecipeHandler implements StandardRecipeHandler<CraftingStationContainerMenu> {
   @Override

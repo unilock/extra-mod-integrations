@@ -4,11 +4,11 @@ import com.kneelawk.extramodintegrations.hephaestus.HephaestusIntegration;
 import dev.emi.emi.api.recipe.EmiRecipe;
 import dev.emi.emi.api.recipe.EmiRecipeCategory;
 import dev.emi.emi.api.recipe.handler.StandardRecipeHandler;
+import net.minecraft.screen.slot.Slot;
 import slimeknights.tconstruct.smeltery.menu.HeatingStructureContainerMenu;
 
 import java.util.ArrayList;
 import java.util.List;
-import net.minecraft.screen.slot.Slot;
 
 public class SmelteryRecipeHandler implements StandardRecipeHandler<HeatingStructureContainerMenu> {
   @Override

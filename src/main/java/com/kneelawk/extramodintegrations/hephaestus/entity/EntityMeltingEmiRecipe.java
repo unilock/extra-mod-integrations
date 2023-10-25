@@ -7,10 +7,10 @@ import dev.emi.emi.api.recipe.EmiRecipeCategory;
 import dev.emi.emi.api.render.EmiTexture;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
-import dev.emi.emi.api.stack.FluidEmiStack;
 import dev.emi.emi.api.widget.TextWidget;
 import dev.emi.emi.api.widget.WidgetHolder;
 import net.minecraft.text.Text;
+import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
 import slimeknights.tconstruct.TConstruct;
 import slimeknights.tconstruct.library.recipe.FluidValues;
@@ -19,8 +19,6 @@ import slimeknights.tconstruct.plugin.jei.melting.MeltingFuelHandler;
 
 import java.awt.*;
 import java.util.List;
-import net.minecraft.text.LiteralTextContent;
-import net.minecraft.util.Identifier;
 
 public class EntityMeltingEmiRecipe implements EmiRecipe {
   public static final Identifier BACKGROUND_LOC = TConstruct.getResource("textures/gui/jei/melting.png");
@@ -38,7 +36,7 @@ public class EntityMeltingEmiRecipe implements EmiRecipe {
     id = recipe.getId();
     entity = EmiIngredient.of(recipe.getEntityInputs().stream().map(e -> new EntityEmiStack(e, 32)).toList());
     spawnEgg = EmiIngredient.of(recipe.getItemInputs().stream().map(EmiStack::of).toList());
-    output = FluidEmiStack.of(recipe.getOutput().getFluid(), recipe.getOutput().getAmount());
+    output = EmiStack.of(recipe.getOutput().getFluid(), recipe.getOutput().getAmount());
     damage = recipe.getDamage();
   }
 
@@ -102,7 +100,7 @@ public class EntityMeltingEmiRecipe implements EmiRecipe {
     EmiIngredient fuels = EmiIngredient.of(MeltingFuelHandler
       .getUsableFuels(1)
       .stream()
-      .map(f -> FluidEmiStack.of(f.getFluid(), f.getAmount()))
+      .map(f -> EmiStack.of(f.getFluid(), f.getAmount()))
       .toList());
     widgets.add(new DynamicFluidSlotWidget(fuels, 75, 43, 16, 16, 1))
             .overlay(tank);

@@ -1,14 +1,14 @@
 package com.kneelawk.extramodintegrations.hephaestus.melting;
 
-import dev.emi.emi.EmiPort;
 import dev.emi.emi.api.recipe.EmiRecipe;
 import dev.emi.emi.api.render.EmiTexture;
 import dev.emi.emi.api.stack.EmiIngredient;
-import dev.emi.emi.api.stack.EmiStack;
-import dev.emi.emi.api.stack.FluidEmiStack;
 import dev.emi.emi.api.widget.TextWidget;
 import dev.emi.emi.api.widget.WidgetHolder;
+import net.minecraft.client.gui.tooltip.TooltipComponent;
 import net.minecraft.registry.Registries;
+import net.minecraft.text.Text;
+import net.minecraft.util.Identifier;
 import slimeknights.tconstruct.TConstruct;
 import slimeknights.tconstruct.library.recipe.ingredient.MaterialIngredient;
 import slimeknights.tconstruct.library.recipe.melting.IMeltingContainer;
@@ -16,10 +16,6 @@ import slimeknights.tconstruct.library.recipe.melting.MeltingRecipe;
 
 import java.awt.*;
 import java.util.List;
-import net.minecraft.client.gui.tooltip.TooltipComponent;
-import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableTextContent;
-import net.minecraft.util.Identifier;
 
 public abstract class AbstractMeltingEmiRecipe implements EmiRecipe {
   protected static final Identifier BACKGROUND_LOC = TConstruct.getResource("textures/gui/jei/melting.png");

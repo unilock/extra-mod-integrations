@@ -3,11 +3,11 @@ package com.kneelawk.extramodintegrations.hephaestus.transfer;
 import com.kneelawk.extramodintegrations.hephaestus.HephaestusIntegration;
 import dev.emi.emi.api.recipe.EmiRecipe;
 import dev.emi.emi.api.recipe.handler.StandardRecipeHandler;
+import net.minecraft.screen.slot.Slot;
 import slimeknights.tconstruct.smeltery.menu.MelterContainerMenu;
 
 import java.util.ArrayList;
 import java.util.List;
-import net.minecraft.screen.slot.Slot;
 
 public class MelterRecipeHandler implements StandardRecipeHandler<MelterContainerMenu> {
   @Override

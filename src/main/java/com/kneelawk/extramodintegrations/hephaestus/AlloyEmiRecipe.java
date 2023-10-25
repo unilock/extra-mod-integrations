@@ -6,22 +6,18 @@ import dev.emi.emi.api.recipe.EmiRecipeCategory;
 import dev.emi.emi.api.render.EmiTexture;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
-import dev.emi.emi.api.stack.FluidEmiStack;
 import dev.emi.emi.api.widget.TextWidget;
 import dev.emi.emi.api.widget.WidgetHolder;
-import net.minecraft.client.gui.tooltip.TooltipComponent;
+import net.minecraft.text.Text;
+import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
 import slimeknights.tconstruct.TConstruct;
 import slimeknights.tconstruct.library.recipe.alloying.AlloyRecipe;
-import slimeknights.tconstruct.library.recipe.fuel.MeltingFuel;
 import slimeknights.tconstruct.plugin.jei.melting.MeltingFuelHandler;
 
 import java.awt.*;
 import java.util.LinkedList;
 import java.util.List;
-import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableTextContent;
-import net.minecraft.util.Identifier;
 
 public class AlloyEmiRecipe implements EmiRecipe {
 
@@ -38,10 +34,10 @@ public class AlloyEmiRecipe implements EmiRecipe {
     id = recipe.getId();
     inputs = recipe.getDisplayInputs().stream()
             .map(l -> EmiIngredient.of(l.stream()
-                    .map(f -> FluidEmiStack.of(f.getFluid(), f.getAmount()))
+                    .map(f -> EmiStack.of(f.getFluid(), f.getAmount()))
                     .toList()))
             .toList();
-    output = FluidEmiStack.of(recipe.getOutput().getFluid(), recipe.getOutput().getAmount());
+    output = EmiStack.of(recipe.getOutput().getFluid(), recipe.getOutput().getAmount());
     temperature = recipe.getTemperature();
   }
 

@@ -3,20 +3,17 @@ package com.kneelawk.extramodintegrations.hephaestus.modifiers;
 import dev.emi.emi.EmiUtil;
 import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.config.EmiConfig;
-import net.minecraft.registry.Registries;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.gui.tooltip.TooltipComponent;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
+import net.minecraft.util.Identifier;
 import slimeknights.tconstruct.library.modifiers.ModifierEntry;
 
 import java.util.ArrayList;
 import java.util.List;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.tooltip.TooltipComponent;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.text.LiteralTextContent;
-import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableTextContent;
-import net.minecraft.util.Formatting;
-import net.minecraft.util.Identifier;
 
 public class ModifierEmiStack extends EmiStack {
   private final ModifierBookmarkRenderer renderer;
@@ -36,8 +33,8 @@ public class ModifierEmiStack extends EmiStack {
   }
 
   @Override
-  public void render(MatrixStack matrices, int x, int y, float delta, int flags) {
-    renderer.render(matrices, x, y, delta);
+  public void render(DrawContext draw, int x, int y, float delta, int flags) {
+    renderer.render(draw, x, y, delta);
   }
 
   @Override

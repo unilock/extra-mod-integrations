@@ -6,12 +6,12 @@ import dev.emi.emi.api.recipe.EmiRecipeCategory;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.WidgetHolder;
+import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
 import slimeknights.tconstruct.TConstruct;
 import slimeknights.tconstruct.library.recipe.modifiers.severing.SeveringRecipe;
 
 import java.util.List;
-import net.minecraft.util.Identifier;
 
 public class SeveringEmiRecipe implements EmiRecipe {
   public static final Identifier BACKGROUND_LOC = TConstruct.getResource("textures/gui/jei/tinker_station.png");
@@ -60,11 +60,6 @@ public class SeveringEmiRecipe implements EmiRecipe {
     widgets.addSlot(input, 3, 3).drawBack(false).customBackground(null, 0, 0, 32, 32);
 
     // output
-    widgets.addSlot(output, 71, 6).drawBack(false).output(true).recipeContext(this);
-  }
-
-  @Override
-  public List<EmiIngredient> getCatalysts() {
-    return List.of();
+    widgets.addSlot(output, 71, 6).drawBack(false).recipeContext(this);
   }
 }

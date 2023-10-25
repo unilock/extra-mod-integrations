@@ -1,7 +1,7 @@
 package com.kneelawk.extramodintegrations.hephaestus.modifiers;
 
 import dev.emi.emi.api.render.EmiRenderable;
-import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.text.Text;
 import slimeknights.tconstruct.library.modifiers.ModifierEntry;
 
@@ -12,7 +12,7 @@ public class ModifierRenderer implements EmiRenderable {
   }
 
   @Override
-  public void render(MatrixStack matrices, int x, int y, float delta) {
+  public void render(DrawContext draw, int x, int y, float delta) {
     if (entry != null) {
       Text name = entry.getModifier().getDisplayName(entry.getLevel());
 //      Font fontRenderer = getFontRenderer(Minecraft.getInstance(), entry);

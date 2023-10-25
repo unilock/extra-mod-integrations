@@ -6,7 +6,6 @@ import dev.emi.emi.api.recipe.EmiRecipeCategory;
 import dev.emi.emi.api.render.EmiTexture;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
-import dev.emi.emi.api.stack.FluidEmiStack;
 import dev.emi.emi.api.widget.WidgetHolder;
 import slimeknights.tconstruct.library.recipe.FluidValues;
 import slimeknights.tconstruct.library.recipe.melting.MeltingRecipe;
@@ -70,7 +69,7 @@ public class MeltingEmiRecipe extends AbstractMeltingEmiRecipe {
 
     // liquid fuel
     EmiIngredient liquidFuels = EmiIngredient.of(MeltingFuelHandler.getUsableFuels(temperature)
-      .stream().map(s -> FluidEmiStack.of(s.getFluid(), s.getAmount())).toList());
+      .stream().map(s -> EmiStack.of(s.getFluid(), s.getAmount())).toList());
     widgets.add(new DynamicFluidSlotWidget(liquidFuels, 4, 4, 12, fuelHeight, 1));
   }
 }

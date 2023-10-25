@@ -22,8 +22,8 @@ import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.stack.EmiStackInteraction;
 import dev.emi.emi.api.widget.Bounds;
+import io.github.fabricators_of_create.porting_lib.fluids.FluidStack;
 import io.github.fabricators_of_create.porting_lib.mixin.accessors.common.accessor.RecipeManagerAccessor;
-import io.github.fabricators_of_create.porting_lib.util.FluidStack;
 import net.minecraft.block.Oxidizable;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.inventory.Inventory;
@@ -42,7 +42,6 @@ import slimeknights.tconstruct.TConstruct;
 import slimeknights.tconstruct.common.TinkerTags;
 import slimeknights.tconstruct.common.config.Config;
 import slimeknights.tconstruct.fluids.TinkerFluids;
-import slimeknights.tconstruct.library.modifiers.Modifier;
 import slimeknights.tconstruct.library.modifiers.ModifierEntry;
 import slimeknights.tconstruct.library.recipe.TinkerRecipeTypes;
 import slimeknights.tconstruct.library.recipe.alloying.AlloyRecipe;
@@ -74,10 +73,8 @@ import slimeknights.tconstruct.tools.TinkerTools;
 import slimeknights.tconstruct.tools.item.CreativeSlotItem;
 
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
-import java.util.function.Function;
 
 public class HephaestusIntegration extends AbstractHephaestusIntegration {
   public static final EmiRecipeCategory SEVERING_CATEGORY =
@@ -271,9 +268,6 @@ public class HephaestusIntegration extends AbstractHephaestusIntegration {
     registry.addRecipeHandler(TinkerSmeltery.smelteryContainer.get(), new SmelteryRecipeHandler());
     registry.addRecipeHandler(TinkerSmeltery.melterContainer.get(), new MelterRecipeHandler());
 
-    // ========== COMPARISONS ==========
-    Function<Comparison, Comparison> compareNbt = c -> c.copy().nbt(true).build();
-
     // retexturable blocks
     // these should be a tag or something
 //    registry.setDefaultComparison(TinkerTables.craftingStation.asItem(), compareNbt);
@@ -293,21 +287,21 @@ public class HephaestusIntegration extends AbstractHephaestusIntegration {
 
     // tool parts
     Registries.ITEM.iterateEntries(TinkerTags.Items.TOOL_PARTS)
-            .forEach(i -> registry.setDefaultComparison(i.value(), compareNbt));
+            .forEach(i -> registry.setDefaultComparison(i.value(), Comparison.compareNbt()));
 
     // tools
     Registries.ITEM.iterateEntries(TinkerTags.Items.MULTIPART_TOOL)
-            .forEach(i -> registry.setDefaultComparison(i.value(), compareNbt));
+            .forEach(i -> registry.setDefaultComparison(i.value(), Comparison.compareNbt()));
 
     // tanks
     Registries.ITEM.iterateEntries(TinkerTags.Items.TANKS)
-            .forEach(i -> registry.setDefaultComparison(i.value(), compareNbt));
+            .forEach(i -> registry.setDefaultComparison(i.value(), Comparison.compareNbt()));
 
     // misc
-    registry.setDefaultComparison(TinkerSmeltery.copperCan.get(), compareNbt);
-    registry.setDefaultComparison(TinkerFluids.potionBucket.asItem(), compareNbt);
-    registry.setDefaultComparison(TinkerModifiers.creativeSlotItem.get(), compareNbt);
-    registry.setDefaultComparison(TinkerModifiers.modifierCrystal.get(), compareNbt);
+    registry.setDefaultComparison(TinkerSmeltery.copperCan.get(), Comparison.compareNbt());
+    registry.setDefaultComparison(TinkerFluids.potionBucket.asItem(), Comparison.compareNbt());
+    registry.setDefaultComparison(TinkerModifiers.creativeSlotItem.get(), Comparison.compareNbt());
+    registry.setDefaultComparison(TinkerModifiers.modifierCrystal.get(), Comparison.compareNbt());
 
     // ========== STACK PROVIDERS ==========
     registry.addStackProvider(MelterScreen.class, new TankStackProvider<>());

@@ -2,21 +2,20 @@ package com.kneelawk.extramodintegrations.hephaestus.entity;
 
 import dev.emi.emi.EmiUtil;
 import dev.emi.emi.api.stack.EmiStack;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-
 import dev.emi.emi.config.EmiConfig;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.tooltip.TooltipComponent;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.EntityType;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 public class EntityEmiStack extends EmiStack {
 
@@ -36,8 +35,8 @@ public class EntityEmiStack extends EmiStack {
   }
 
   @Override
-  public void render(MatrixStack matrixStack, int x, int y, float delta, int flags) {
-    renderer.render(matrixStack, x, y, delta);
+  public void render(DrawContext draw, int x, int y, float delta, int flags) {
+    renderer.render(draw, x, y, delta);
   }
 
   @Override

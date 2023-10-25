@@ -6,7 +6,6 @@ import com.kneelawk.extramodintegrations.util.DynamicFluidSlotWidget;
 import dev.emi.emi.api.recipe.EmiRecipeCategory;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
-import dev.emi.emi.api.stack.FluidEmiStack;
 import dev.emi.emi.api.widget.WidgetHolder;
 import net.minecraft.util.Identifier;
 import slimeknights.tconstruct.library.recipe.FluidValues;
@@ -22,7 +21,7 @@ public class FoundryEmiRecipe extends AbstractMeltingEmiRecipe {
     outputs = recipe.getOutputWithByproducts()
             .stream()
             .map(e -> e.get(0))
-            .map(s -> FluidEmiStack.of(s.getFluid(), s.getAmount()))
+            .map(s -> EmiStack.of(s.getFluid(), s.getAmount()))
             .toList();
   }
 
@@ -52,7 +51,7 @@ public class FoundryEmiRecipe extends AbstractMeltingEmiRecipe {
 
     // fuel
     EmiIngredient fuels = EmiIngredient.of(MeltingFuelHandler.getUsableFuels(temperature)
-            .stream().map(s -> FluidEmiStack.of(s.getFluid(), s.getAmount()))
+            .stream().map(s -> EmiStack.of(s.getFluid(), s.getAmount()))
             .toList());
     widgets.add(new DynamicFluidSlotWidget(fuels, 4, 4, 12, 32, 1));
   }

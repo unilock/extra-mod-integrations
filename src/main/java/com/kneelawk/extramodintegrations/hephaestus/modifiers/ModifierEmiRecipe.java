@@ -10,7 +10,19 @@ import dev.emi.emi.api.widget.Bounds;
 import dev.emi.emi.api.widget.TextWidget;
 import dev.emi.emi.api.widget.Widget;
 import dev.emi.emi.api.widget.WidgetHolder;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.gui.tooltip.TooltipComponent;
+import net.minecraft.client.render.GameRenderer;
+import net.minecraft.client.render.model.BakedModel;
+import net.minecraft.client.render.model.BakedModelManager;
+import net.minecraft.client.texture.MissingSprite;
+import net.minecraft.client.texture.Sprite;
+import net.minecraft.client.util.SpriteIdentifier;
 import net.minecraft.recipe.Recipe;
+import net.minecraft.screen.PlayerScreenHandler;
+import net.minecraft.text.Text;
+import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
 import slimeknights.mantle.client.model.NBTKeyModel;
 import slimeknights.tconstruct.TConstruct;
@@ -27,21 +39,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.tooltip.TooltipComponent;
-import net.minecraft.client.render.GameRenderer;
-import net.minecraft.client.render.model.BakedModel;
-import net.minecraft.client.render.model.BakedModelManager;
-import net.minecraft.client.texture.MissingSprite;
-import net.minecraft.client.texture.Sprite;
-import net.minecraft.client.util.SpriteIdentifier;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.screen.PlayerScreenHandler;
-import net.minecraft.text.LiteralTextContent;
-import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableTextContent;
-import net.minecraft.util.Identifier;
 
 public class ModifierEmiRecipe implements EmiRecipe {
   protected static final Identifier BACKGROUND_LOC = TConstruct.getResource("textures/gui/jei/tinker_station.png");
@@ -162,7 +159,7 @@ public class ModifierEmiRecipe implements EmiRecipe {
             .recipeContext(this);
     // tool
     widgets.addSlot(tools.get(0),  24, 37).drawBack(false);
-    widgets.addSlot(tools.get(1), 100, 29).drawBack(false).output(true);
+    widgets.addSlot(tools.get(1), 100, 29).drawBack(false).recipeContext(this);
   }
 
   private void drawOutline(WidgetHolder widgets, int slot, int x, int y) {
@@ -208,7 +205,7 @@ public class ModifierEmiRecipe implements EmiRecipe {
     }
 
     @Override
-    public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+    public void render(DrawContext draw, int mouseX, int mouseY, float delta) {
       MinecraftClient minecraft = MinecraftClient.getInstance();
       Sprite sprite;
       SlotType slotType = slots == null ? null : slots.getType();
@@ -230,7 +227,7 @@ public class ModifierEmiRecipe implements EmiRecipe {
       RenderSystem.setShader(GameRenderer::getPositionTexProgram);
       RenderSystem.setShaderTexture(0, PlayerScreenHandler.BLOCK_ATLAS_TEXTURE);
 
-      Screen.drawSprite(matrices, x, y, 0, 16, 16, sprite);
+      draw.drawSprite(x, y, 0, 16, 16, sprite);
     }
   }
 

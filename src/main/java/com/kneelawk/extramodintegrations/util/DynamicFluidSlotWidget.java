@@ -1,26 +1,25 @@
 package com.kneelawk.extramodintegrations.util;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import org.joml.Matrix4f;
 import dev.emi.emi.EmiPort;
 import dev.emi.emi.EmiRenderHelper;
 import dev.emi.emi.api.render.EmiRender;
 import dev.emi.emi.api.render.EmiTexture;
-import dev.emi.emi.api.stack.*;
+import dev.emi.emi.api.stack.EmiIngredient;
+import dev.emi.emi.api.stack.EmiStack;
+import dev.emi.emi.api.stack.ListEmiIngredient;
+import dev.emi.emi.api.stack.TagEmiIngredient;
 import dev.emi.emi.api.widget.Bounds;
 import dev.emi.emi.api.widget.SlotWidget;
 import dev.emi.emi.config.EmiConfig;
+import dev.emi.emi.runtime.EmiDrawContext;
 import net.fabricmc.fabric.api.transfer.v1.client.fluid.FluidVariantRendering;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
-import net.minecraft.client.render.BufferBuilder;
-import net.minecraft.client.render.GameRenderer;
-import net.minecraft.client.render.Tessellator;
-import net.minecraft.client.render.VertexFormat;
-import net.minecraft.client.render.VertexFormats;
+import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.render.*;
 import net.minecraft.client.texture.Sprite;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.fluid.Fluid;
-import reborncore.common.fluid.container.FluidInstance;
+import org.joml.Matrix4f;
 
 public class DynamicFluidSlotWidget extends SlotWidget {
     public static final float FLUID_PATCH_WIDTH = 16f;
@@ -31,22 +30,22 @@ public class DynamicFluidSlotWidget extends SlotWidget {
     protected final long capacity;
     protected EmiTexture overlay;
 
-    public DynamicFluidSlotWidget(FluidInstance fluid, int x, int y, int width, int height, long capacity) {
-        this(FluidEmiStack.of(fluid.getFluid(), fluid.getAmount().getRawValue()), x, y, width, height, capacity);
-    }
+    //public DynamicFluidSlotWidget(FluidInstance fluid, int x, int y, int width, int height, long capacity) {
+    //    this(EmiStack.of(fluid.getFluid(), fluid.getAmount().getRawValue()), x, y, width, height, capacity);
+    //}
 
     public DynamicFluidSlotWidget(FluidVariant fluid, int amount, int x, int y, int width, int height, long capacity) {
-        this(FluidEmiStack.of(fluid.getFluid(), amount), x, y, width, height, capacity);
+        this(EmiStack.of(fluid.getFluid(), amount), x, y, width, height, capacity);
     }
 
     public DynamicFluidSlotWidget(Fluid fluid, int amount, int x, int y, int width, int height, long capacity) {
-        this(FluidEmiStack.of(fluid, amount), x, y, width, height, capacity);
+        this(EmiStack.of(fluid, amount), x, y, width, height, capacity);
     }
 
     public DynamicFluidSlotWidget(EmiIngredient stack, int x, int y, int width, int height, long capacity) {
         super(stack, x, y);
 
-        if (stack.getEmiStacks().stream().anyMatch(s -> !(s instanceof FluidEmiStack))) {
+        if (stack.getEmiStacks().stream().anyMatch(s -> !(s instanceof EmiStack))) {
             throw new IllegalArgumentException("Ingredient must be fluid " + stack);
         }
 
@@ -66,53 +65,53 @@ public class DynamicFluidSlotWidget extends SlotWidget {
     }
 
     @Override
-    public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+    public void render(DrawContext draw, int mouseX, int mouseY, float delta) {
         float fluidWidth = (float) width;
 
-        FluidEmiStack fluidEmiStack = null;
-        if (stack instanceof FluidEmiStack s) {
-            fluidEmiStack = s;
+        EmiStack emiStack = null;
+        if (stack instanceof EmiStack s) {
+            emiStack = s;
         } else if (stack instanceof ListEmiIngredient listEmiIngredient) {
             int elementIndex = (int) (System.currentTimeMillis() / 1000 % listEmiIngredient.getEmiStacks().size());
             // hopefully this doesn't break everything...
-            fluidEmiStack = (FluidEmiStack) listEmiIngredient.getEmiStacks().get(elementIndex).copy().setAmount(stack.getAmount());
+            emiStack = listEmiIngredient.getEmiStacks().get(elementIndex).copy().setAmount(stack.getAmount());
         } else if (stack instanceof TagEmiIngredient tagEmiIngredient) {
-            if (tagEmiIngredient.getEmiStacks().size() > 0) {
+            if (!tagEmiIngredient.getEmiStacks().isEmpty()) {
                 // modeled tags are complicated so i'm just rendering the first element of the tag
-                fluidEmiStack = (FluidEmiStack) tagEmiIngredient.getEmiStacks().get(0);
+                emiStack = tagEmiIngredient.getEmiStacks().get(0);
             }
         }
 
-        if (fluidEmiStack != null) {
-            renderFluid(matrices, FluidVariant.of((Fluid) fluidEmiStack.getKey()), x, y, fluidWidth, ((float) fluidEmiStack.getAmount() / capacity) * height, height);
+        if (emiStack != null) {
+            renderFluid(draw, FluidVariant.of((Fluid) emiStack.getKey()), x, y, fluidWidth, ((float) emiStack.getAmount() / capacity) * height, height);
         }
 
         if (overlay != null) {
-            matrices.push();
-            matrices.translate(0.0, 0.0, 50.0);
-            overlay.render(matrices, x, y, delta);
-            matrices.pop();
+            draw.getMatrices().push();
+            draw.getMatrices().translate(0.0, 0.0, 50.0);
+            overlay.render(draw, x, y, delta);
+            draw.getMatrices().pop();
         }
 
         if (this.catalyst) {
-            EmiRender.renderCatalystIcon(this.getStack(), matrices, x + 2, y + 4);
+            EmiRender.renderCatalystIcon(this.getStack(), draw, x + 2, y + 4);
         }
 
         // TODO: only render these if the corresponding flag is set (where?)
         if (stack instanceof TagEmiIngredient) {
-            EmiRender.renderTagIcon(stack, matrices, x, y + height - 16);
+            EmiRender.renderTagIcon(stack, draw, x, y + height - 16);
         } else if (stack instanceof ListEmiIngredient) {
-            EmiRender.renderIngredientIcon(stack, matrices, x, y);
+            EmiRender.renderIngredientIcon(stack, draw, x, y);
         }
 
         Bounds bounds = getBounds();
         if (EmiConfig.showHoverOverlay && bounds.contains(mouseX, mouseY)) {
-            EmiRenderHelper.drawSlotHightlight(matrices, bounds.x(), bounds.y(), bounds.width(),
+            EmiRenderHelper.drawSlotHightlight(EmiDrawContext.wrap(draw), bounds.x(), bounds.y(), bounds.width(),
                 bounds.height());
         }
     }
 
-    private static void renderFluid(MatrixStack matrices, FluidVariant fluid, int x, int y, float slotWidth, float fluidHeight, float slotHeight) {
+    private static void renderFluid(DrawContext draw, FluidVariant fluid, int x, int y, float slotWidth, float fluidHeight, float slotHeight) {
         Sprite[] sprites = FluidVariantRendering.getSprites(fluid);
         if (sprites == null || sprites.length < 1 || sprites[0] == null) {
             return;
@@ -125,7 +124,7 @@ public class DynamicFluidSlotWidget extends SlotWidget {
         RenderSystem.setShader(GameRenderer::getPositionColorTexProgram);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.setShaderTexture(0, sprite.getAtlasId());
-        Matrix4f model = matrices.peek().getPositionMatrix();
+        Matrix4f model = draw.getMatrices().peek().getPositionMatrix();
         int color = FluidVariantRendering.getColor(fluid);
         float r = (float) (color >> 16 & 0xFF) / 256.0F;
         float g = (float) (color >> 8 & 0xFF) / 256.0F;

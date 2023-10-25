@@ -6,13 +6,13 @@ import dev.emi.emi.api.recipe.EmiRecipe;
 import dev.emi.emi.api.recipe.handler.EmiCraftContext;
 import dev.emi.emi.api.recipe.handler.StandardRecipeHandler;
 import dev.emi.emi.api.stack.EmiIngredient;
+import net.minecraft.screen.slot.Slot;
 import slimeknights.tconstruct.library.recipe.partbuilder.Pattern;
 import slimeknights.tconstruct.tables.block.entity.table.PartBuilderBlockEntity;
 import slimeknights.tconstruct.tables.menu.PartBuilderContainerMenu;
 
 import java.util.ArrayList;
 import java.util.List;
-import net.minecraft.screen.slot.Slot;
 
 public class PartBuilderRecipeHandler implements StandardRecipeHandler<PartBuilderContainerMenu> {
   @Override

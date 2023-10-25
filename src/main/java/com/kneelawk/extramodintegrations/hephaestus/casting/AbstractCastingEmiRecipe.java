@@ -6,21 +6,16 @@ import dev.emi.emi.api.recipe.EmiRecipe;
 import dev.emi.emi.api.render.EmiTexture;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
-import dev.emi.emi.api.stack.FluidEmiStack;
-import dev.emi.emi.api.widget.TextWidget;
 import dev.emi.emi.api.widget.WidgetHolder;
+import net.minecraft.client.gui.tooltip.TooltipComponent;
+import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
 import slimeknights.tconstruct.TConstruct;
 import slimeknights.tconstruct.library.recipe.FluidValues;
 import slimeknights.tconstruct.library.recipe.casting.IDisplayableCastingRecipe;
 import slimeknights.tconstruct.library.recipe.casting.container.ContainerFillingRecipe;
 
-import java.awt.*;
 import java.util.List;
-import net.minecraft.client.gui.tooltip.TooltipComponent;
-import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableTextContent;
-import net.minecraft.util.Identifier;
 
 public abstract class AbstractCastingEmiRecipe implements EmiRecipe {
   protected static final Identifier BACKGROUND_LOC = TConstruct.getResource("textures/gui/jei/casting.png");
@@ -52,7 +47,7 @@ public abstract class AbstractCastingEmiRecipe implements EmiRecipe {
     hasCast = recipe.hasCast();
     isConsumed = recipe.isConsumed();
     castItem = hasCast ? EmiIngredient.of(recipe.getCastItems().stream().map(EmiStack::of).toList()) : EmiStack.EMPTY;
-    fluidInput = EmiIngredient.of(recipe.getFluids().stream().map(f -> FluidEmiStack.of(f.getFluid(), f.getAmount())).toList());
+    fluidInput = EmiIngredient.of(recipe.getFluids().stream().map(f -> EmiStack.of(f.getFluid(), f.getAmount())).toList());
     output = EmiStack.of(recipe.getOutput());
     coolingTime = recipe.getCoolingTime();
   }
@@ -106,7 +101,7 @@ public abstract class AbstractCastingEmiRecipe implements EmiRecipe {
     if (!castItem.isEmpty()) {
       widgets.addSlot(castItem, 37, 18).drawBack(false).catalyst(!isConsumed);
     }
-    widgets.addSlot(output, 88, 13).drawBack(false).output(true).recipeContext(this);
+    widgets.addSlot(output, 88, 13).drawBack(false).recipeContext(this);
 
     // fluids
     // tank fluids

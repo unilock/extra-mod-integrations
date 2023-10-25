@@ -8,6 +8,8 @@ import dev.emi.emi.api.render.EmiTexture;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.WidgetHolder;
+import net.minecraft.text.Text;
+import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
 import slimeknights.mantle.client.ResourceColorManager;
 import slimeknights.tconstruct.TConstruct;
@@ -19,9 +21,6 @@ import slimeknights.tconstruct.plugin.jei.partbuilder.MaterialItemList;
 import java.awt.*;
 import java.util.List;
 import java.util.Objects;
-import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableTextContent;
-import net.minecraft.util.Identifier;
 
 public class PartBuilderEmiRecipe implements EmiRecipe {
   private static final Identifier BACKGROUND_LOC = TConstruct.getResource("textures/gui/jei/tinker_station.png");
@@ -98,7 +97,7 @@ public class PartBuilderEmiRecipe implements EmiRecipe {
     // TODO: material input?
 
     // output
-    widgets.addSlot(output, 91, 10).drawBack(false).output(true).recipeContext(this);
+    widgets.addSlot(output, 91, 10).drawBack(false).recipeContext(this);
 
     // texts
     Text name = MaterialTooltipCache.getColoredDisplayName(variantId);

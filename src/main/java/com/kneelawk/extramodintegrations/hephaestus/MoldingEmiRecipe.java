@@ -6,13 +6,13 @@ import dev.emi.emi.api.render.EmiTexture;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.WidgetHolder;
+import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
 import slimeknights.tconstruct.TConstruct;
 import slimeknights.tconstruct.library.recipe.TinkerRecipeTypes;
 import slimeknights.tconstruct.library.recipe.molding.MoldingRecipe;
 
 import java.util.List;
-import net.minecraft.util.Identifier;
 
 public class MoldingEmiRecipe implements EmiRecipe {
   private static final Identifier BACKGROUND_LOC = TConstruct.getResource("textures/gui/jei/casting.png");
