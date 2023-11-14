@@ -1,9 +1,8 @@
 package com.kneelawk.extramodintegrations.mystagri;
 
-import com.alex.mysticalagriculture.api.crafting.IInfusionRecipe;
+import com.alex.mysticalagriculture.api.crafting.ISoulExtractionRecipe;
 import dev.emi.emi.api.recipe.EmiRecipe;
 import dev.emi.emi.api.recipe.EmiRecipeCategory;
-import dev.emi.emi.api.render.EmiTexture;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.WidgetHolder;
@@ -12,12 +11,12 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class InfusionEmiRecipe implements EmiRecipe {
+public class SoulExtractionEmiRecipe implements EmiRecipe {
     private final Identifier id;
     private final List<EmiIngredient> inputs;
     private final EmiStack output;
 
-    public InfusionEmiRecipe(IInfusionRecipe recipe) {
+    public SoulExtractionEmiRecipe(ISoulExtractionRecipe recipe) {
         this.id = recipe.getId();
         this.inputs = recipe.getIngredients().stream().map(EmiIngredient::of).toList();
         this.output = EmiStack.of(recipe.getOutput());
@@ -25,7 +24,7 @@ public class InfusionEmiRecipe implements EmiRecipe {
 
     @Override
     public EmiRecipeCategory getCategory() {
-        return MystAgriIntegration.INFUSION;
+        return MystAgriIntegration.SOUL_EXTRACTION;
     }
 
     @Override
@@ -45,29 +44,20 @@ public class InfusionEmiRecipe implements EmiRecipe {
 
     @Override
     public int getDisplayWidth() {
-        return 152;
+        return 90;
     }
 
     @Override
     public int getDisplayHeight() {
-        return 89;
+        return 34;
     }
 
     @Override
     public void addWidgets(WidgetHolder widgets) {
-        widgets.addSlot(inputs.get(0), 28 + 4 + 5, 28 + 4 + 5);
+        widgets.addSlot(inputs.get(0), 0 + 4 + 1, 4 + 4 + 1);
 
-        widgets.addSlot(inputs.get(1), 6 + 4 + 1, 6 + 4 + 1);
-        widgets.addSlot(inputs.get(2), 32 + 4 + 1, 0 + 4 + 1);
-        widgets.addSlot(inputs.get(3), 58 + 4 + 1, 6 + 4 + 1);
-        widgets.addSlot(inputs.get(4), 64 + 4 + 1, 32 + 4 + 1);
-        widgets.addSlot(inputs.get(5), 58 + 4 + 1, 58 + 4 + 1);
-        widgets.addSlot(inputs.get(6), 32 + 4 + 1, 63 + 4 + 1);
-        widgets.addSlot(inputs.get(7), 6 + 4 + 1, 58 + 4 + 1);
-        widgets.addSlot(inputs.get(8), 0 + 4 + 1, 32 + 4 + 1);
+        widgets.addFillingArrow(24 + 4, 4 + 4, 10000);
 
-        widgets.addTexture(EmiTexture.EMPTY_ARROW, 88 + 4, 32 + 4);
-
-        widgets.addSlot(output, 118 + 4 + 5, 28 + 4 + 5).recipeContext(this);
+        widgets.addSlot(output, 56 + 4 + 5, 0 + 4 + 5).recipeContext(this);
     }
 }

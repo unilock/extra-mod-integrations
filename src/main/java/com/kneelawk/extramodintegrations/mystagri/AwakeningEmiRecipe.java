@@ -68,6 +68,6 @@ public class AwakeningEmiRecipe implements EmiRecipe {
 
         widgets.addTexture(EmiTexture.EMPTY_ARROW, 88 + 4, 32 + 4);
 
-        widgets.addSlot(output, 118 + 4 + 5, 28 + 4 + 5);
+        widgets.addSlot(output, 118 + 4 + 5, 28 + 4 + 5).recipeContext(this);
     }
 }
