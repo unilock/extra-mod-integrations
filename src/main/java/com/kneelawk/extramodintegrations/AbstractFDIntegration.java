@@ -10,12 +10,21 @@ public abstract class AbstractFDIntegration {
     public static final AbstractFDIntegration INSTANCE;
 
     static {
-        if (FabricLoader.getInstance().isModLoaded("farmersdelight")) {
+        if (FabricLoader.getInstance().isModLoaded("farmersdelight") && isOldFD()) {
             INSTANCE =
                     ReflectionUtils.newIntegrationInstance(
                             "com.kneelawk.extramodintegrations.farmersdelight.FDIntegration", "Farmer's Delight");
         } else {
             INSTANCE = null;
+        }
+    }
+
+    private static boolean isOldFD() {
+        try {
+            Class.forName("com.nhoryzon.mc.farmersdelight.FarmersDelightMod");
+            return true;
+        } catch (ClassNotFoundException e) {
+            return false;
         }
     }
 
