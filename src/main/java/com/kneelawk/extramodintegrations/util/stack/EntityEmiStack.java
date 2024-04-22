@@ -10,6 +10,7 @@ import net.minecraft.client.Mouse;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.InventoryScreen;
 import net.minecraft.client.gui.tooltip.TooltipComponent;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.nbt.NbtCompound;
@@ -24,12 +25,12 @@ import java.util.List;
 import java.util.Map;
 
 public class EntityEmiStack extends EmiStack {
-    private static final Map<EntityType<? extends LivingEntity>, LivingEntity> CACHE = new HashMap<>();
+    private static final Map<EntityType<?>, Entity> CACHE = new HashMap<>();
 
-    private final LivingEntity entity;
-    private final EntityType<? extends LivingEntity> type;
+    private final Entity entity;
+    private final EntityType<?> type;
 
-    public EntityEmiStack(EntityType<? extends LivingEntity> entityType) {
+    public EntityEmiStack(EntityType<?> entityType) {
         this.type = entityType;
         MinecraftClient client = MinecraftClient.getInstance();
         this.entity = CACHE.computeIfAbsent(entityType, entityType1 -> {
@@ -46,10 +47,12 @@ public class EntityEmiStack extends EmiStack {
     @Override
     public void render(DrawContext draw, int x, int y, float delta, int flags) {
         if (((flags & RENDER_ICON) != 0)) {
-            Mouse mouse = MinecraftClient.getInstance().mouse;
-            float mouseX = (float) mouse.getX() + x;
-            float mouseY = (float) mouse.getY() + y;
-            InventoryScreen.drawEntity(draw, x + 8, y + 16, 8, 0, 0, entity);
+            if (entity instanceof LivingEntity living) {
+                Mouse mouse = MinecraftClient.getInstance().mouse;
+                float mouseX = (float) mouse.getX() + x;
+                float mouseY = (float) mouse.getY() + y;
+                InventoryScreen.drawEntity(draw, x + 8, y + 16, 8, 0, 0, living);
+            }
         }
         if ((flags & RENDER_REMAINDER) != 0) {
             EmiRender.renderRemainderIcon(this, draw, x, y);
