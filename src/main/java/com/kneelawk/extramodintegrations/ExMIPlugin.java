@@ -33,6 +33,7 @@ public class ExMIPlugin implements EmiPlugin {
         AbstractConjuringIntegration.register(registry);
         AbstractAE2Integration.register(registry);
         AbstractTiCIntegration.register(registry);
+        AbstractDimDoorsIntegration.register(registry);
     }
 
     @Override
