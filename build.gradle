@@ -71,6 +71,7 @@ repositories {
             includeGroup "com.github.llamalad7.mixinextras"
             includeGroup "com.github.Chocohead"
             includeGroup "com.github.bawnorton.mixinsquared"
+            includeGroup "com.github.DimensionalDevelopment"
         }
     }
 
@@ -147,6 +148,15 @@ repositories {
         url "https://maven.jamieswhiteshirt.com/libs-release"
         content {
             includeGroup "com.jamieswhiteshirt"
+        }
+    }
+
+    maven {
+        // Cloth Config, required by Dimensional Doors
+        name "Shedaniel"
+        url "https://maven.shedaniel.me"
+        content {
+            includeGroup "me.shedaniel.cloth"
         }
     }
 }
@@ -233,6 +243,21 @@ dependencies {
         }
     }
 
+    // Dimensional Doors
+    if (dimdoors_enabled.toBoolean()) {
+        dependencies.ext.mod "maven.modrinth:dimensionaldoors:${project.dimdoors_version}"
+        dependencies.ext.mod "dev.architectury:architectury-fabric:${project.arch_version}"
+        dependencies.ext.mod "me.shedaniel.cloth:cloth-config-fabric:${project.cloth_version}"
+        dependencies.ext.mod "dev.onyxstudios.cardinal-components-api:cardinal-components-base:${project.cca_version}"
+        dependencies.ext.mod "dev.onyxstudios.cardinal-components-api:cardinal-components-item:${project.cca_version}"
+        dependencies.ext.mod "dev.onyxstudios.cardinal-components-api:cardinal-components-world:${project.cca_version}"
+        dependencies.ext.mod "dev.onyxstudios.cardinal-components-api:cardinal-components-chunk:${project.cca_version}"
+        dependencies.ext.mod "com.flowpowered:flow-math:1.0.3"
+        dependencies.ext.mod "org.jgrapht:jgrapht-core:1.1.0"
+        dependencies.ext.mod "com.github.DimensionalDevelopment:poly2tri.java:0.1.1"
+        dependencies.ext.mod "com.github.Chocohead:Fabric-ASM:v2.3"
+    }
+
     //
     // Stuff we just want to have at runtime
     //
@@ -269,6 +294,9 @@ sourceSets {
             }
             if (!tic_enabled.toBoolean()) {
                 exclude('com/kneelawk/extramodintegrations/tconstruct')
+            }
+            if (!dimdoors_enabled.toBoolean()) {
+                exclude('com/kneelawk/extramodintegrations/dimdoors')
             }
         }
     }
