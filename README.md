@@ -6,16 +6,17 @@ This mod is an addon for the powerful, new recipe viewer [EMI]. This addon adds 
 
 ## Supported Mods
 
-| Mod                      | Support | Notes                                                                                        |
-|--------------------------|:-------:|----------------------------------------------------------------------------------------------|
-| Tech Reborn              |    ✅   | Added in `v0.1.0`                                                                            |
-| Advanced Reborn          |    🔲   |                                                                                              |
-| Industrial Revolution    |    ✅   | Added in `v0.1.2`                                                                            |
-| Extra Generators         |    ⁇   |                                                                                              |
-| Hephaestus               |    ✅   | Added in `0.4.3`                                                                             |
-| Farmers' Delight         |    ✅   | Added in `0.4.1`                                                                             |
-| Conjuring                |    ✅   | Added in `0.4.1`                                                                             |
-| Applied Energistics 2    |    🚧   | Support incomplete. Added in `0.4.2`. Does not support AE terminals. See [AE2 EMI Crafting]. |
+| Mod                   | Support | Notes                                                                                        |
+|-----------------------|:-------:|----------------------------------------------------------------------------------------------|
+| Tech Reborn           |    ✅   | Added in `v0.1.0`                                                                            |
+| Advanced Reborn       |    🔲   |                                                                                              |
+| Industrial Revolution |    ✅   | Added in `v0.1.2`                                                                            |
+| Extra Generators      |    ⁇   |                                                                                              |
+| Hephaestus            |    ✅   | Added in `0.4.3`                                                                             |
+| Farmers' Delight      |    ✅   | Added in `0.4.1`                                                                             |
+| Conjuring             |    ✅   | Added in `0.4.1`                                                                             |
+| Applied Energistics 2 |    🚧   | Support incomplete. Added in `0.4.2`. Does not support AE terminals. See [AE2 EMI Crafting]. |
+| Dimensional Doors     |    ✅   | Added in `0.4.5`                                                                             |
 
 ✅: Support Completed<br>
 🚧: Support In Progress<br>
