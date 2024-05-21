@@ -3,12 +3,15 @@ package com.kneelawk.extramodintegrations.tconstruct.recipe.melting;
 import com.kneelawk.extramodintegrations.ExMIMod;
 import com.kneelawk.extramodintegrations.tconstruct.TiCCategories;
 import com.kneelawk.extramodintegrations.tconstruct.Util;
+import com.kneelawk.extramodintegrations.tconstruct.recipe.TiCTankWidget;
 import dev.emi.emi.api.stack.EmiIngredient;
+import dev.emi.emi.api.widget.SlotWidget;
 import dev.emi.emi.api.widget.TankWidget;
 import dev.emi.emi.api.widget.WidgetHolder;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
+import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import slimeknights.tconstruct.library.recipe.FluidValues;
 import slimeknights.tconstruct.library.recipe.melting.IMeltingContainer;
@@ -22,6 +25,7 @@ public class FoundryEmiRecipe extends AbstractMeltingEmiRecipe {
     private final int time;
     private final int temperature;
     private final IMeltingContainer.OreRateType oreRateType;
+    private final List<List<Text>> outputsTiCTooltip;
     
     public static FoundryEmiRecipe of(MeltingRecipe recipe) {
         ItemStack[] inputStacks = recipe.getInput().getMatchingStacks();
@@ -47,6 +51,12 @@ public class FoundryEmiRecipe extends AbstractMeltingEmiRecipe {
                 .stream()
                 .flatMap(Collection::stream)
                 .map(Util::convertFluid)
+                .toList();
+
+        this.outputsTiCTooltip = recipe.getOutputWithByproducts()
+                .stream()
+                .flatMap(Collection::stream)
+                .map(Util::getFluidTiCTooltip)
                 .toList();
     }
 
@@ -75,9 +85,10 @@ public class FoundryEmiRecipe extends AbstractMeltingEmiRecipe {
         int w = 32 / outputs.size();
         for (int i = 0; i < outputs.size(); i++) {
             int x = 95 + i * w;
-            widgets.add(new TankWidget(outputs.get(i), x, 3, w + 2, 34, FluidValues.METAL_BLOCK))
+            SlotWidget outputSlot = widgets.add(new TiCTankWidget(outputs.get(i), x, 3, w + 2, 34, FluidValues.METAL_BLOCK))
                     .drawBack(false)
                     .recipeContext(this);
+            ((TiCTankWidget) outputSlot).setTiCTooltip(outputsTiCTooltip.get(i));
         }
 
         widgets.add(new TankWidget(EmiIngredient.of(MeltingFuelHandler.getUsableFuels(temperature).stream().map(Util::convertFluid).toList()), 3, 3, 14, 34, 1))

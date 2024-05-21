@@ -2,10 +2,13 @@ package com.kneelawk.extramodintegrations.tconstruct.recipe.melting;
 
 import com.kneelawk.extramodintegrations.tconstruct.TiCCategories;
 import com.kneelawk.extramodintegrations.tconstruct.Util;
+import com.kneelawk.extramodintegrations.tconstruct.recipe.TiCTankWidget;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
+import dev.emi.emi.api.widget.SlotWidget;
 import dev.emi.emi.api.widget.TankWidget;
 import dev.emi.emi.api.widget.WidgetHolder;
+import io.github.fabricators_of_create.porting_lib.fluids.FluidStack;
 import slimeknights.tconstruct.library.recipe.FluidValues;
 import slimeknights.tconstruct.library.recipe.melting.IMeltingContainer;
 import slimeknights.tconstruct.library.recipe.melting.MeltingRecipe;
@@ -17,12 +20,14 @@ import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
+import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
 public class MeltingEmiRecipe extends AbstractMeltingEmiRecipe {
     private final int time;
     private final int temperature;
     private final IMeltingContainer.OreRateType oreRateType;
+    private final List<List<Text>> outputsTiCTooltip;
     
     public static MeltingEmiRecipe of(MeltingRecipe recipe) {
         ItemStack[] inputStacks = recipe.getInput().getMatchingStacks();
@@ -49,6 +54,7 @@ public class MeltingEmiRecipe extends AbstractMeltingEmiRecipe {
             originalOutput = oreRate.applyOreBoost(oreRateType, originalOutput);
         }
         this.outputs = List.of(Util.convertFluid(originalOutput));
+        this.outputsTiCTooltip = List.of(Util.getFluidTiCTooltip(originalOutput));
     }
 
     @Override
@@ -77,9 +83,10 @@ public class MeltingEmiRecipe extends AbstractMeltingEmiRecipe {
         widgets.addSlot(inputs.get(0), 23, 17)
                 .drawBack(false);
 
-        widgets.add(new TankWidget(outputs.get(0), 95, 3, 34, 34, FluidValues.METAL_BLOCK))
+        SlotWidget outputSlot = widgets.add(new TiCTankWidget(outputs.get(0), 95, 3, 34, 34, FluidValues.METAL_BLOCK))
                 .drawBack(false)
                 .recipeContext(this);
+        ((TiCTankWidget) outputSlot).setTiCTooltip(outputsTiCTooltip.get(0));
 
         int fuelHeight;
         if (temperature <= FuelModule.SOLID_TEMPERATURE) {
