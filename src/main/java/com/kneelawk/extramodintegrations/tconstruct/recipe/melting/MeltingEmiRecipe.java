@@ -11,6 +11,7 @@ import slimeknights.tconstruct.library.recipe.melting.IMeltingContainer;
 import slimeknights.tconstruct.library.recipe.melting.MeltingRecipe;
 import slimeknights.tconstruct.plugin.jei.melting.MeltingFuelHandler;
 import slimeknights.tconstruct.smeltery.block.entity.module.FuelModule;
+import slimeknights.tconstruct.common.config.Config;
 
 import java.util.List;
 
@@ -32,18 +33,22 @@ public class MeltingEmiRecipe extends AbstractMeltingEmiRecipe {
         } else {
             id = recipe.getId();
         }
-        return new MeltingEmiRecipe(recipe, id);
+        return new MeltingEmiRecipe(recipe, id, Config.COMMON.smelteryOreRate);
     }
 
-    private MeltingEmiRecipe(MeltingRecipe recipe, Identifier id) {
+    private MeltingEmiRecipe(MeltingRecipe recipe, Identifier id, IMeltingContainer.IOreRate oreRate) {
         super(TiCCategories.MELTING, id);
-
-        this.inputs = recipe.getIngredients().stream().map(EmiIngredient::of).toList();
-        this.outputs = List.of(Util.convertFluid(recipe.getOutput()));
 
         this.time = recipe.getTime();
         this.temperature = recipe.getTemperature();
         this.oreRateType = recipe.getOreType();
+
+        this.inputs = recipe.getIngredients().stream().map(EmiIngredient::of).toList();
+        FluidStack originalOutput = recipe.getOutput();
+        if (this.oreRateType != null) {
+            originalOutput = oreRate.applyOreBoost(oreRateType, originalOutput);
+        }
+        this.outputs = List.of(Util.convertFluid(originalOutput));
     }
 
     @Override
