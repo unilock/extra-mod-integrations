@@ -83,10 +83,10 @@ public class MeltingEmiRecipe extends AbstractMeltingEmiRecipe {
         widgets.addSlot(inputs.get(0), 23, 17)
                 .drawBack(false);
 
-        SlotWidget outputSlot = widgets.add(new TiCTankWidget(outputs.get(0), 95, 3, 34, 34, FluidValues.METAL_BLOCK))
+        widgets.add(new TiCTankWidget(outputs.get(0), 95, 3, 34, 34, FluidValues.METAL_BLOCK))
+                .setTiCTooltip(outputsTiCTooltip.get(0))
                 .drawBack(false)
                 .recipeContext(this);
-        ((TiCTankWidget) outputSlot).setTiCTooltip(outputsTiCTooltip.get(0));
 
         int fuelHeight;
         if (temperature <= FuelModule.SOLID_TEMPERATURE) {

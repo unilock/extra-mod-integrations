@@ -5,7 +5,6 @@ import com.kneelawk.extramodintegrations.tconstruct.TiCCategories;
 import com.kneelawk.extramodintegrations.tconstruct.Util;
 import dev.emi.emi.api.recipe.BasicEmiRecipe;
 import dev.emi.emi.api.stack.EmiIngredient;
-import dev.emi.emi.api.widget.SlotWidget;
 import dev.emi.emi.api.widget.TankWidget;
 import dev.emi.emi.api.widget.TextWidget;
 import dev.emi.emi.api.widget.WidgetHolder;
@@ -58,10 +57,10 @@ public class AlloyEmiRecipe extends BasicEmiRecipe {
                     .drawBack(false);
         }
 
-        SlotWidget outputSlot = widgets.add(new TiCTankWidget(outputs.get(0), 136, 10, 18, 34, maxAmount))
+        widgets.add(new TiCTankWidget(outputs.get(0), 136, 10, 18, 34, maxAmount))
+                .setTiCTooltip(outputsTiCTooltip.get(0))
                 .drawBack(false)
                 .recipeContext(this);
-        ((TiCTankWidget) outputSlot).setTiCTooltip(outputsTiCTooltip.get(0));
 
         widgets.addSlot(EmiIngredient.of(MeltingFuelHandler.getUsableFuels(temperature).stream().map(Util::convertFluid).toList()), 93, 42)
                 .drawBack(false);

@@ -5,7 +5,6 @@ import com.kneelawk.extramodintegrations.tconstruct.TiCCategories;
 import com.kneelawk.extramodintegrations.tconstruct.Util;
 import com.kneelawk.extramodintegrations.tconstruct.recipe.TiCTankWidget;
 import dev.emi.emi.api.stack.EmiIngredient;
-import dev.emi.emi.api.widget.SlotWidget;
 import dev.emi.emi.api.widget.TankWidget;
 import dev.emi.emi.api.widget.WidgetHolder;
 
@@ -85,10 +84,10 @@ public class FoundryEmiRecipe extends AbstractMeltingEmiRecipe {
         int w = 32 / outputs.size();
         for (int i = 0; i < outputs.size(); i++) {
             int x = 95 + i * w;
-            SlotWidget outputSlot = widgets.add(new TiCTankWidget(outputs.get(i), x, 3, w + 2, 34, FluidValues.METAL_BLOCK))
+            widgets.add(new TiCTankWidget(outputs.get(i), x, 3, w + 2, 34, FluidValues.METAL_BLOCK))
+                    .setTiCTooltip(outputsTiCTooltip.get(i))
                     .drawBack(false)
                     .recipeContext(this);
-            ((TiCTankWidget) outputSlot).setTiCTooltip(outputsTiCTooltip.get(i));
         }
 
         widgets.add(new TankWidget(EmiIngredient.of(MeltingFuelHandler.getUsableFuels(temperature).stream().map(Util::convertFluid).toList()), 3, 3, 14, 34, 1))

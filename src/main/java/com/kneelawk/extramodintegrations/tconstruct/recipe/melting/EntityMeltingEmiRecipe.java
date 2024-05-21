@@ -8,7 +8,6 @@ import com.kneelawk.extramodintegrations.util.widget.ScaledSlotWidget;
 import dev.emi.emi.api.recipe.BasicEmiRecipe;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
-import dev.emi.emi.api.widget.SlotWidget;
 import dev.emi.emi.api.widget.TextWidget;
 import dev.emi.emi.api.widget.WidgetHolder;
 import net.minecraft.text.Text;
@@ -51,10 +50,10 @@ public class EntityMeltingEmiRecipe extends BasicEmiRecipe {
         widgets.addSlot(EmiIngredient.of(MeltingFuelHandler.getUsableFuels(1).stream().map(Util::convertFluid).toList()), 74, 42)
                 .drawBack(false);
 
-        SlotWidget outputSlot = widgets.add(new TiCTankWidget(outputs.get(0), 114, 10, 18, 34, FluidValues.INGOT * 2))
+        widgets.add(new TiCTankWidget(outputs.get(0), 114, 10, 18, 34, FluidValues.INGOT * 2))
+                .setTiCTooltip(outputsTiCTooltip.get(0))
                 .drawBack(false)
                 .recipeContext(this);
-        ((TiCTankWidget) outputSlot).setTiCTooltip(outputsTiCTooltip.get(0));
     }
 
     @Override
