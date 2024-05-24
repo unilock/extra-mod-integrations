@@ -17,6 +17,7 @@ import slimeknights.tconstruct.smeltery.block.entity.module.FuelModule;
 import slimeknights.tconstruct.common.config.Config;
 
 import java.util.List;
+import java.util.function.Supplier;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
@@ -27,7 +28,7 @@ public class MeltingEmiRecipe extends AbstractMeltingEmiRecipe {
     private final int time;
     private final int temperature;
     private final IMeltingContainer.OreRateType oreRateType;
-    private final List<List<Text>> outputsTiCTooltip;
+    private final List<Supplier<List<Text>>> outputsTiCTooltip;
     
     public static MeltingEmiRecipe of(MeltingRecipe recipe) {
         ItemStack[] inputStacks = recipe.getInput().getMatchingStacks();
@@ -84,7 +85,7 @@ public class MeltingEmiRecipe extends AbstractMeltingEmiRecipe {
                 .drawBack(false);
 
         widgets.add(new TiCTankWidget(outputs.get(0), 95, 3, 34, 34, FluidValues.METAL_BLOCK))
-                .setTiCTooltip(outputsTiCTooltip.get(0))
+                .setTiCTooltipSupplier(outputsTiCTooltip.get(0))
                 .drawBack(false)
                 .recipeContext(this);
 

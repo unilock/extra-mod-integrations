@@ -16,13 +16,14 @@ import slimeknights.tconstruct.library.recipe.alloying.AlloyRecipe;
 import slimeknights.tconstruct.plugin.jei.melting.MeltingFuelHandler;
 
 import java.util.List;
+import java.util.function.Supplier;
 
 public class AlloyEmiRecipe extends BasicEmiRecipe {
     private static final Identifier BACKGROUND_LOC = TConstruct.getResource("textures/gui/jei/alloy.png");
     private static final String KEY_TEMPERATURE = TConstruct.makeTranslationKey("jei", "temperature");
 
     private final int temperature;
-    private final List<List<Text>> outputsTiCTooltip;
+    private final List<Supplier<List<Text>>> outputsTiCTooltip;
 
     public AlloyEmiRecipe(AlloyRecipe recipe) {
         super(TiCCategories.ALLOY, recipe.getId(), 172, 62);
@@ -58,7 +59,7 @@ public class AlloyEmiRecipe extends BasicEmiRecipe {
         }
 
         widgets.add(new TiCTankWidget(outputs.get(0), 136, 10, 18, 34, maxAmount))
-                .setTiCTooltip(outputsTiCTooltip.get(0))
+                .setTiCTooltipSupplier(outputsTiCTooltip.get(0))
                 .drawBack(false)
                 .recipeContext(this);
 

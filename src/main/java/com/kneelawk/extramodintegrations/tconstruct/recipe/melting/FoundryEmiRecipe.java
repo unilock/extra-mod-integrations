@@ -19,12 +19,13 @@ import slimeknights.tconstruct.plugin.jei.melting.MeltingFuelHandler;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.function.Supplier;
 
 public class FoundryEmiRecipe extends AbstractMeltingEmiRecipe {
     private final int time;
     private final int temperature;
     private final IMeltingContainer.OreRateType oreRateType;
-    private final List<List<Text>> outputsTiCTooltip;
+    private final List<Supplier<List<Text>>> outputsTiCTooltip;
     
     public static FoundryEmiRecipe of(MeltingRecipe recipe) {
         ItemStack[] inputStacks = recipe.getInput().getMatchingStacks();
@@ -84,8 +85,9 @@ public class FoundryEmiRecipe extends AbstractMeltingEmiRecipe {
         int w = 32 / outputs.size();
         for (int i = 0; i < outputs.size(); i++) {
             int x = 95 + i * w;
+            int idx = i;
             widgets.add(new TiCTankWidget(outputs.get(i), x, 3, w + 2, 34, FluidValues.METAL_BLOCK))
-                    .setTiCTooltip(outputsTiCTooltip.get(i))
+                    .setTiCTooltipSupplier(outputsTiCTooltip.get(idx))
                     .drawBack(false)
                     .recipeContext(this);
         }

@@ -18,12 +18,13 @@ import slimeknights.tconstruct.library.recipe.entitymelting.EntityMeltingRecipe;
 import slimeknights.tconstruct.plugin.jei.melting.MeltingFuelHandler;
 
 import java.util.List;
+import java.util.function.Supplier;
 
 public class EntityMeltingEmiRecipe extends BasicEmiRecipe {
     public static final Identifier BACKGROUND_LOC = TConstruct.getResource("textures/gui/jei/melting.png");
 
     private final int damage;
-    private final List<List<Text>> outputsTiCTooltip;
+    private final List<Supplier<List<Text>>> outputsTiCTooltip;
 
     public EntityMeltingEmiRecipe(EntityMeltingRecipe recipe) {
         super(TiCCategories.ENTITY_MELTING, recipe.getId(), 150, 62);
@@ -51,7 +52,7 @@ public class EntityMeltingEmiRecipe extends BasicEmiRecipe {
                 .drawBack(false);
 
         widgets.add(new TiCTankWidget(outputs.get(0), 114, 10, 18, 34, FluidValues.INGOT * 2))
-                .setTiCTooltip(outputsTiCTooltip.get(0))
+                .setTiCTooltipSupplier(outputsTiCTooltip.get(0))
                 .drawBack(false)
                 .recipeContext(this);
     }
