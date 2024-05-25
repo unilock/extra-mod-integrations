@@ -2,26 +2,33 @@ package com.kneelawk.extramodintegrations.tconstruct.recipe.melting;
 
 import com.kneelawk.extramodintegrations.tconstruct.TiCCategories;
 import com.kneelawk.extramodintegrations.tconstruct.Util;
+import com.kneelawk.extramodintegrations.tconstruct.recipe.TiCTankWidget;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
+import dev.emi.emi.api.widget.SlotWidget;
 import dev.emi.emi.api.widget.TankWidget;
 import dev.emi.emi.api.widget.WidgetHolder;
+import io.github.fabricators_of_create.porting_lib.fluids.FluidStack;
 import slimeknights.tconstruct.library.recipe.FluidValues;
 import slimeknights.tconstruct.library.recipe.melting.IMeltingContainer;
 import slimeknights.tconstruct.library.recipe.melting.MeltingRecipe;
 import slimeknights.tconstruct.plugin.jei.melting.MeltingFuelHandler;
 import slimeknights.tconstruct.smeltery.block.entity.module.FuelModule;
+import slimeknights.tconstruct.common.config.Config;
 
 import java.util.List;
+import java.util.function.Supplier;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
+import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
 public class MeltingEmiRecipe extends AbstractMeltingEmiRecipe {
     private final int time;
     private final int temperature;
     private final IMeltingContainer.OreRateType oreRateType;
+    private final List<Supplier<List<Text>>> outputsTiCTooltip;
     
     public static MeltingEmiRecipe of(MeltingRecipe recipe) {
         ItemStack[] inputStacks = recipe.getInput().getMatchingStacks();
@@ -32,18 +39,23 @@ public class MeltingEmiRecipe extends AbstractMeltingEmiRecipe {
         } else {
             id = recipe.getId();
         }
-        return new MeltingEmiRecipe(recipe, id);
+        return new MeltingEmiRecipe(recipe, id, Config.COMMON.smelteryOreRate);
     }
 
-    private MeltingEmiRecipe(MeltingRecipe recipe, Identifier id) {
+    private MeltingEmiRecipe(MeltingRecipe recipe, Identifier id, IMeltingContainer.IOreRate oreRate) {
         super(TiCCategories.MELTING, id);
-
-        this.inputs = recipe.getIngredients().stream().map(EmiIngredient::of).toList();
-        this.outputs = List.of(Util.convertFluid(recipe.getOutput()));
 
         this.time = recipe.getTime();
         this.temperature = recipe.getTemperature();
         this.oreRateType = recipe.getOreType();
+
+        this.inputs = recipe.getIngredients().stream().map(EmiIngredient::of).toList();
+        FluidStack originalOutput = recipe.getOutput();
+        if (this.oreRateType != null) {
+            originalOutput = oreRate.applyOreBoost(oreRateType, originalOutput);
+        }
+        this.outputs = List.of(Util.convertFluid(originalOutput));
+        this.outputsTiCTooltip = List.of(Util.getFluidTiCTooltip(originalOutput));
     }
 
     @Override
@@ -72,7 +84,8 @@ public class MeltingEmiRecipe extends AbstractMeltingEmiRecipe {
         widgets.addSlot(inputs.get(0), 23, 17)
                 .drawBack(false);
 
-        widgets.add(new TankWidget(outputs.get(0), 95, 3, 34, 34, FluidValues.METAL_BLOCK))
+        widgets.add(new TiCTankWidget(outputs.get(0), 95, 3, 34, 34, FluidValues.METAL_BLOCK))
+                .setTiCTooltipSupplier(outputsTiCTooltip.get(0))
                 .drawBack(false)
                 .recipeContext(this);
 
