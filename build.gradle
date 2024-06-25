@@ -159,6 +159,15 @@ repositories {
             includeGroup "me.shedaniel.cloth"
         }
     }
+
+    maven {
+        // Patchouli, required by Hibernal Herbs
+        name "BlameJared"
+        url "https://maven.blamejared.com"
+        content {
+            includeGroup "vazkii.patchouli"
+        }
+    }
 }
 
 dependencies {
@@ -258,6 +267,14 @@ dependencies {
         dependencies.ext.mod "com.github.Chocohead:Fabric-ASM:v2.3"
     }
 
+    // Hibernal Herbs
+    if (hibernal_herbs_enabled.toBoolean()) {
+        dependencies.ext.mod "maven.modrinth:hibernal-herbs:${project.hibernal_herbs_verison}"
+        dependencies.ext.mod "dev.architectury:architectury-fabric:${project.arch_version}"
+        dependencies.ext.mod "vazkii.patchouli:Patchouli:${project.patchouli_version}"
+        dependencies.ext.mod "dev.emi:trinkets:${project.trinkets_version}"
+    }
+
     //
     // Stuff we just want to have at runtime
     //
@@ -297,6 +314,9 @@ sourceSets {
             }
             if (!dimdoors_enabled.toBoolean()) {
                 exclude('com/kneelawk/extramodintegrations/dimdoors')
+            }
+            if (!hibernal_herbs_enabled.toBoolean()) {
+                exclude('com/kneelawk/extramodintegrations/hibernalherbs')
             }
         }
     }
